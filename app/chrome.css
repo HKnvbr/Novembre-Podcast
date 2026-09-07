@@ -1,0 +1,270 @@
+/* ==========================================================================
+   Chrome — logotype, en-tête, menu, pied de page, bandeau défilant
+   ========================================================================== */
+
+/* ----------------------------------------------------------- logotype --- */
+
+.logo {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.logo__nom {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+.logo__descripteur { color: var(--orange-texte); }
+
+/* Version barre de navigation : micro, nom sur une ligne, descripteur à côté. */
+.logo--entete {
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+/* Le micro est calé sur la hauteur de capitale du nom, pas sur sa taille de
+   police : c'est ce qui le fait lire comme une lettre de plus, et non comme une
+   icône posée à côté. */
+.logo--entete .logo__micro {
+  width: auto;
+  height: 1.02em;
+  align-self: center;
+  color: var(--orange);
+  transform: translateY(0.02em);
+  transition: transform var(--t-moyen) var(--ease-out);
+}
+
+.entete__marque:hover .logo__micro { transform: translateY(-0.12em); }
+
+.logo--entete .logo__nom { font-size: clamp(0.92rem, 1.15vw, 1.2rem); }
+.logo--entete .logo__ligne + .logo__ligne { margin-left: 0.32em; }
+.logo--entete .logo__descripteur {
+  font-size: calc(var(--fs-label) * 0.94);
+  transition: opacity var(--t-moyen) var(--ease);
+}
+
+.entete__marque:hover .logo__descripteur { opacity: 0.6; }
+
+/* Version lockup : micro, nom empilé, descripteur dessous. */
+.logo--lockup {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.logo--lockup .logo__micro {
+  width: auto;
+  height: clamp(1.75rem, 2.6vw, 2.5rem);
+  color: var(--orange);
+}
+
+.logo--lockup .logo__nom {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+}
+
+.logo--lockup .logo__descripteur { letter-spacing: 0.22em; }
+
+/* --------------------------------------------------- signature animateur */
+
+.signature {
+  font-size: var(--fs-small);
+  font-weight: 300;
+  letter-spacing: -0.005em;
+}
+
+.signature__avec { color: var(--texte); }
+.signature__nom { color: var(--orange-texte); }
+
+/* ------------------------------------------------------------ en-tête --- */
+
+.entete {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  color: var(--blanc);
+}
+
+.entete__barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  height: var(--header);
+  position: relative;
+}
+
+/* Fond opaque au décollement */
+.entete__barre::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--nuit);
+  border-bottom: 1px solid var(--filet);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity var(--t-moyen) var(--ease), transform var(--t-moyen) var(--ease-out);
+  z-index: -1;
+}
+
+.entete[data-decolle] .entete__barre::before { opacity: 1; transform: none; }
+
+/* Voile discret quand la barre est posée sur une photographie : le cadrage
+   change d'un épisode à l'autre, et en mobile la zone haute peut être claire. */
+.entete__barre::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--header) * 1.9);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0) 100%);
+  transition: opacity var(--t-moyen) var(--ease);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.entete[data-decolle] .entete__barre::after,
+.entete[data-ouvert] .entete__barre::after { opacity: 0; }
+
+.entete__marque { position: relative; z-index: 1; }
+
+.entete__nav ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.2vw, 2.5rem);
+}
+
+/* Le bouton d'écoute est la seule surface rouge de la barre. */
+.entete__ecouter {
+  padding: 0.75em 1.35em;
+  border-color: var(--orange);
+  color: var(--orange-clair);
+}
+
+.entete__ecouter::before { background: var(--orange); }
+.entete__ecouter:hover, .entete__ecouter:focus-visible { color: var(--blanc); }
+
+.entete__bascule { display: none; }
+
+@media (max-width: 949px) {
+  .entete__nav { display: none; }
+  .entete__bascule { display: block; }
+}
+
+/* ------------------------------------------------------- menu mobile --- */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  background: var(--nuit);
+  color: var(--blanc);
+  padding: calc(var(--header) + 2rem) var(--outer) 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+
+.menu[hidden] { display: none; }
+
+.menu nav { margin-block: auto; }
+.menu ul { display: flex; flex-direction: column; gap: 0.15em; }
+
+.menu__lien {
+  display: block;
+  padding-block: 0.14em;
+  animation: menu-entree 0.6s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 60ms);
+}
+
+.menu__pied { padding-top: 2rem; border-top: 1px solid var(--filet); }
+
+@keyframes menu-entree {
+  from { opacity: 0; transform: translateY(0.6em); }
+  to { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------- bandeau défilant --- */
+
+.ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--regle);
+  padding-block: clamp(0.5rem, 1.2vw, 1.1rem);
+  user-select: none;
+}
+
+.ticker__piste {
+  display: flex;
+  width: max-content;
+  animation: defile linear infinite;
+}
+
+.ticker__item {
+  font-size: clamp(1.7rem, 5.6vw, 5.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ticker__sep {
+  padding-inline: clamp(0.6rem, 1.6vw, 1.8rem);
+  color: var(--orange);
+}
+
+@keyframes defile {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__piste { animation: none; }
+  .menu__lien { animation: none; }
+}
+
+/* -------------------------------------------------------- pied de page - */
+
+.pied { padding-block: var(--section) 2rem; }
+
+.pied__haut {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-bottom: var(--section-serre);
+}
+
+.pied__promesse { letter-spacing: -0.04em; }
+
+.pied__action { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+
+.pied__grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+  gap: var(--gap) clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+@media (max-width: 799px) {
+  .pied__grille { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+.pied__colonne--marque { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.pied__titre { color: var(--texte-faible); padding-bottom: 1.25rem; }
+
+.pied__liste { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.pied__bas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.75rem;
+  color: var(--texte-faible);
+}
