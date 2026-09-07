@@ -1,6 +1,6 @@
 import { site } from '@/content/site';
 import type { Episode } from '@/content/types';
-import { canonicalUrl } from './episodes';
+import { canonicalUrl, episodeName } from './episodes';
 import { formatIsoDuration } from './format';
 
 /**
@@ -60,7 +60,11 @@ export function episodeSchema(episode: Episode) {
     '@type': 'PodcastEpisode',
     '@id': `${url}#episode`,
     url,
-    name: episode.title,
+    // `name` est le nom de l'épisode côté plateformes : la formule de la charte,
+    // la même que dans le flux RSS. Le titre rédactionnel devient l'alternative,
+    // ce qui laisse les deux lisibles par un agrégateur.
+    name: episodeName(episode),
+    alternateName: episode.title,
     episodeNumber: episode.episodeNumber,
     description: episode.excerpt,
     datePublished: episode.publishedAt,

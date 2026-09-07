@@ -11,8 +11,13 @@ import { getAllEpisodes, resolveEpisode, vanityUrl } from '@/lib/episodes';
  * valides même si toute la diffusion change de main.
  *
  * Niveau de correction M (~15 % de tolérance) : le bon compromis pour un code
- * imprimé sur un support qui peut être plié ou sali. Fond transparent, tracé en
- * `currentColor` noir — le QR s'intègre à la page sans cadre blanc.
+ * imprimé sur un support qui peut être plié ou sali.
+ *
+ * Fond transparent, modules en bleu nuit : le code se pose sur le crème de la
+ * page sans cadre blanc, et le couple reste à 12,7:1 — très au-delà de ce qu'un
+ * lecteur demande. La version imprimable, elle, reste en noir sur blanc : un
+ * support commercial passe par des photocopieurs et des impressions monochromes
+ * dont on ne maîtrise rien.
  */
 
 export const dynamic = 'force-static';
@@ -31,7 +36,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     errorCorrectionLevel: 'M',
     margin: 1,
     type: 'svg',
-    color: { dark: '#000000', light: '#00000000' },
+    color: { dark: '#1a243d', light: '#00000000' },
   });
 
   return new Response(svg, {

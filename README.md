@@ -45,8 +45,17 @@ Changer de promesse = éditer une chaîne dans un fichier.
 
 ## 2. La direction artistique
 
-Relevée directement sur le deck **DLM** (Figma, nœuds `2874:46` → `2874:100`) —
-pas approchée à l'œil.
+Relevée sur la page **DLM** du fichier de charte (Figma, nœuds `2894:270` →
+`2894:438`) — échantillonnée au pixel, pas approchée à l'œil. C'est une leçon
+payée : une révision précédente avait pris la couleur d'un *calque* Figma avant
+fusion, et le site en était ressorti visiblement plus pâle que la planche.
+
+**La révision principale est un renversement de registre.** La version
+précédente était bleu nuit de bout en bout. Le fichier révisé pose sa
+typographie **bleu nuit sur des fonds clairs** — c'est le cas de la planche de
+mise en situation, des pochettes et de la couverture. Le registre clair est donc
+devenu le registre par défaut, le bleu nuit un registre plein tenu pour les
+bandes de respiration et le pied de page, le champ orange la ponctuation.
 
 ### Typographie — deux familles
 
@@ -58,8 +67,8 @@ commerciale, donc **non embarquées** :
 | Logotype et titres | **PP Neue Machina** | **Sora** — même ADN géométrique à courbes carrées, jusqu'à 800 |
 | Noms et texte courant | **PP Neue Montreal** | **Instrument Sans** — néo-grotesque de même largeur étroite |
 
-Les substituts ont été choisis en rendant les candidats côte à côte contre les
-planches typographiques du fichier, pas au jugé. Les noms sous licence sont
+Les substituts ont été choisis en rendant les candidats côte à côte contre la
+planche typographique du fichier, pas au jugé. Les noms sous licence sont
 déclarés **en premier** dans les piles :
 
 ```css
@@ -76,77 +85,125 @@ d'autre à changer.
 
 ### Palette
 
+Cinq valeurs dans le fichier, relevées au pixel sur la planche de nuancier :
+
+| Relevé | Valeur |
+|---|---|
+| Encre | `#0E0F13` |
+| Bleu ardoise | `#1D2C3E` |
+| Brume | `#B1BFCF` |
+| Terre cuite | `#BD5E27` |
+| Crème | `#ECE9E4` |
+
+Le fond des planches est en outre à `#1A243D` — c'est cette valeur, et non celle
+du nuancier, qui sert de surface bleu nuit.
+
+Les jetons du système ajoutent ce que le contraste exige et que le nuancier ne
+fournit pas :
+
 | Token | Valeur | Usage | Contraste |
 |---|---|---|---|
-| `--nuit` | `#1a243d` | fond dominant | — |
-| `--nuit-profond` | `#141b2e` | alternance de section | — |
+| `--creme` | `#ece9e4` | **fond dominant** | — |
+| `--creme-creuse` | `#e2ddd5` | alternance de section | — |
+| `--nuit` | `#1a243d` | registre plein, texte sur crème | 12,7:1 sur crème |
+| `--nuit-profond` | `#141b2e` | alternance dans le registre nuit | — |
 | `--nuit-haute` | `#232e4c` | encarts, lecteur, champs | — |
-| `--blanc` | `#ffffff` | titres | 15,4:1 sur nuit |
-| `--brume` | `#b0c0d0` | texte courant et méta | 8,3:1 |
-| `--brume-sourde` | `#8490a4` | tertiaire | 4,8:1 |
-| `--orange` | `#c4662e` | aplats, points, filets — **graphique** | 3,88:1 |
-| `--orange-texte` | `#d17946` | texte accentué sur bleu nuit | 4,79:1 |
-| `--orange-clair` | `#e08a55` | petites capitales espacées | 5,82:1 |
-| `--encre` | `#121212` | logotype sur blanc, texte **sur** le champ orange | 4,7 → 5,8:1 |
+| `--plomb` | `#565e6c` | texte secondaire sur crème | 5,4:1 |
+| `--brume` | `#b1bfcf` | texte courant sur bleu nuit | 8,2:1 |
+| `--brume-sourde` | `#8490a4` | tertiaire sur bleu nuit | 4,8:1 |
+| `--encre` | `#0e0f13` | typographie sur photographie | 15,8:1 sur crème |
+| `--orange` | `#bd5e27` | aplats, points, filets — **graphique** | 3,6:1 / 3,5:1 |
+| `--orange-fonce` | `#a94e21` | texte accentué sur crème | 4,6:1 |
+| `--orange-texte` | `#d17946` | texte accentué sur bleu nuit | 4,8:1 |
+| `--orange-clair` | `#e08a55` | petites capitales sur bleu nuit | 5,8:1 |
+| `--brasier-panneau` | `#97461c` | panneau de texte sur le champ orange | 6,5:1 en blanc |
 
-Les valeurs sont relevées **au pixel sur les planches du fichier** — fond
-`#1A243D`, texte `#B0C0D0`, secondaire `#8490A4`, champ orange `#C4662E` →
-`#D17946`.
+**Trois valeurs d'orange, imposées par le contraste.** `#BD5E27` est la couleur
+de marque mais ne porte pas de texte : 3,6:1 sur crème, 3,5:1 sur bleu nuit —
+assez pour un point ou un filet (seuil 3:1), pas pour un mot. `#A94E21` atteint
+4,6:1 et porte les mots du registre clair, `#D17946` fait le même travail sur
+bleu nuit.
 
-Trois valeurs d'orange, et c'est le contraste qui les impose : `#C4662E` est la
-couleur de marque mais plafonne à **3,88:1** sur bleu nuit — assez pour un point
-ou un filet (seuil 3:1), pas pour du texte. `#D17946` atteint 4,79:1 et porte
-donc les mots ; `#E08A55` monte à 5,82:1 pour les petites capitales espacées, où
-la finesse du trait mange du contraste.
+**Le panneau orange assombri est la solution du fichier, pas la mienne.** Là où
+la charte pose un bloc de texte long sur l'orange — le flanc droit des cartes
+d'épisode — elle assombrit son propre aplat. Relevé à `#97461C`, ce qui fait
+passer le blanc de 4,4:1 à 6,5:1. Le dégradé n'est donc pas décoratif : il est ce
+qui rend le bloc lisible.
 
-Symétriquement, sur le champ orange c'est **l'encre** qui porte le texte : du
-blanc y plafonne à 3,97:1.
+Deux valeurs (`--plomb`, `--orange-fonce`) ne figurent pas dans le fichier : ce
+sont les valeurs du nuancier désaturées ou densifiées jusqu'au seuil AA. Un
+nuancier de marque n'est pas un système de texte.
 
-Trois valeurs du rouge, et c'est une nécessité mesurée : `#e92305` est la couleur
-de marque et passe AA sur noir (4,71:1), mais plafonne à **4,46:1** sous du blanc
-— insuffisant pour un bouton plein. `#e01f04`, imperceptiblement plus dense,
-atteint 4,81:1 et ne sert que de surface.
+### Les trois registres
 
-### Les deux registres
+Un seul mécanisme : chaque classe réécrit les jetons de contexte, et tout ce qui
+vit à l'intérieur suit — filets, boutons, contour de focus, voile des
+photographies, bouton plein. **Aucun composant ne code sa propre couleur.**
 
-La charte alterne deux surfaces, et le site fait de même :
+| Classe | Fond | Texte | Bouton plein |
+|---|---|---|---|
+| *(défaut)* | crème | bleu nuit | bleu nuit |
+| `.nuit` | bleu nuit | crème / brume | terre cuite |
+| `.brasier` | champ orange | encre | bleu nuit |
+| `.panneau` | orange assombri | blanc | — |
 
-- **Le bleu nuit**, dominant, avec un halo orange discret — classe `.braise`
-  (variantes `.braise--basse`, `.braise--gauche`), et `.surface` pour assombrir
-  d'un cran une section sans changer de registre.
-- **Le champ orange plein** — classe `.brasier`, qui reprend la carte du
-  fichier de charte. Elle bascule les jetons de contexte (`--fond`, `--texte`,
-  `--texte-faible`, `--regle`, `--filet-appuye`), et le texte y passe en encre.
+Le bouton plein déclare deux paires, repos et survol, au lieu de dériver la
+seconde de la première : sur l'orange de marque, **aucune couleur n'atteint AA**
+— l'encre plafonne à 4,37:1 et le blanc à 4,38:1, les deux meilleurs candidats.
+Le bouton plein du registre nuit prend donc l'orange assombri, où le blanc monte
+à 6,5:1. Les six états (trois registres × repos/survol) sont mesurés sur le rendu
+et tiennent entre 5,4:1 et 12,7:1.
 
-**Le site est aujourd'hui bleu nuit de bout en bout** : `.brasier` est définie,
-complète et testée, mais appliquée nulle part dans les pages — elle sert en
-revanche de fond aux cartes de partage d'épisode. Colorer une section revient à
-lui ajouter la classe : tout suit, y compris les filets de formulaire, le bouton
-plein et le contour de focus.
+`.surface` creuse la surface d'un cran **sans changer de registre** : crème
+appuyé en clair, bleu nuit profond en nuit. `.braise` pose le halo de la charte
+(variantes `.braise--basse`, `.braise--gauche`), avec deux dosages — sur crème,
+un halo orange se voit dix fois plus que sur bleu nuit, et les valeurs du
+registre nuit y faisaient une tache.
 
-La classe `.bandes` porte un troisième motif, disponible et non utilisé.
+Le rythme de la home : hero clair → manifeste bleu nuit → bandeau défilant →
+dernier épisode sur crème → liens → archive en crème appuyé → pied bleu nuit.
 
-Le voile posé sur les photographies est lui aussi en bleu nuit, pas en noir :
-un noir pur creusait un trou dans la page.
+### La carte d'épisode
+
+Le geste central du fichier révisé, porté par
+[`components/EpisodeCard.tsx`](components/EpisodeCard.tsx) : un cadre arrondi
+coupé en deux, la photographie à gauche sous le logotype, le panneau de texte à
+droite sur l'orange assombri.
+
+Elle est le **seul arrondi** du système (`--rayon-carte: 22px`) et le seul aplat
+de couleur pleine. Son logotype se mesure à la carte et non à la fenêtre
+(`container-type: inline-size`, unités `cqw`) : la même carte dans une colonne de
+560 px et en pleine largeur porte le même logotype à l'échelle.
 
 ### Les libellés
 
-Le fichier de charte fixe deux tournures, portées par
+Le fichier fixe trois tournures, portées par
 [`lib/episodes.ts`](lib/episodes.ts) :
 
-- `episodeIdentity()` → **« Derrière la marque / Café Reck »** — le média, puis
-  le client. Elle sert là où le contexte ne dit pas déjà de quel média il
-  s'agit : carte de partage, pochette, publication. Sur le site, l'en-tête porte
-  déjà le logotype, la répéter dans chaque hero serait redondant.
-- `guestLine()` → **« Il y a Thomas Riegert, artisan torréfacteur »** — la voix
-  du podcast. On ne dit pas « avec », on dit « il y a ». La fonction est
-  décapitalisée dans la phrase, sauf sigles et noms propres.
+- `episodeName()` → **« Derrière Café Reck, il y a Thomas Riegert »**. Relevée
+  telle quelle sur la planche Apple Podcasts, où le gabarit est écrit en clair :
+  *« DERRIÈRE LA MARQUE XX, il y a XXXX »*. Le nom du média est un début de
+  phrase que chaque épisode termine — c'est le ressort éditorial du podcast. Elle
+  sert de titre partout où le contexte ne dit pas déjà de quel média il s'agit :
+  flux RSS, carte de partage, référencement, données structurées.
+- `episodeIdentity()` → **« Derrière la marque Reck »**. Le verrou graphique : le
+  nom du client devient la **troisième ligne du logotype**. Le média ne se
+  juxtapose pas au client, il l'absorbe.
+- `guestCredit()` → **« Avec Thomas Riegert, artisan torréfacteur »** — le crédit
+  des cartes. La fonction est décapitalisée dans la phrase, sauf sigles et noms
+  propres.
 
-Conséquence sur la hiérarchie : **le client mène**, l'invité suit. C'est le nom
-qu'on reconnaît dans une liste ou un fil, et c'est l'ordre des pochettes du
-fichier.
+« Il y a » et « Avec » coexistent dans le fichier et ne disent pas la même
+chose : *il y a* est la voix du titre, qui révèle quelqu'un derrière une marque ;
+*Avec* est le crédit, qui l'attribue.
 
-Le descripteur du logotype est **« Podcast Business »**.
+Le site garde en plus le titre rédactionnel (`episode.title`) pour son grand
+titre — c'est ce que la charte affiche sur la carte, sous le nom de l'épisode. Le
+JSON-LD expose les deux : `name` porte la formule, `alternateName` le titre
+rédactionnel.
+
+Le descripteur du logotype est **« Le podcast »**, la catégorie de diffusion
+**« Business »** — les deux relevés sur les planches.
 
 ### Le logotype
 
@@ -154,8 +211,8 @@ Le descripteur du logotype est **« Podcast Business »**.
 Dessiné en typographie, jamais en image : il reste net à toute taille et hérite
 de la couleur de son contexte.
 
-- [`components/Wordmark.tsx`](components/Wordmark.tsx) — version barre de
-  navigation et version lockup (avec micro + descripteur)
+- [`components/Wordmark.tsx`](components/Wordmark.tsx) — barre de navigation et
+  lockup ; la prop `marque` ajoute la troisième ligne (le client)
 - [`components/SplitLogo.tsx`](components/SplitLogo.tsx) — version à l'échelle du
   cadre, révélée lettre à lettre ; le miroir est composé **avec** la translation
   du volet, pas écrasé par elle
@@ -164,25 +221,33 @@ de la couleur de son contexte.
 
 ### Photographie
 
-La charte présente ses images **en couleur naturelle** — cuir fauve, jean,
-lumière du jour. Le traitement se limite donc à un léger appui de contraste et
-une densité un peu réduite pour que la typographie tienne par-dessus. Ni
-désaturation ni sépia : c'était le registre de la charte précédente.
+La charte photographie **en lumière du jour** — mur clair, cuir fauve, aucun
+assombrissement. Le traitement se limite donc à un appui de contraste : la
+densité réduite de la version bleu nuit salissait l'image sur un fond crème.
 
 ```
-image → voile bleu nuit (lisibilité du texte) → lumière orange (par-dessus le voile)
+image → voile (lisibilité du texte) → lumière orange (par-dessus le voile)
 ```
 
 L'ordre compte : dans l'autre sens, le voile éteignait la couleur. Le voile est
-en deux dégradés — un latéral garantit une colonne sombre à gauche, là où vit la
+en deux dégradés — le latéral garantit une colonne calme à gauche, là où vit la
 typographie, ce qui rend la lisibilité indépendante de la photo fournie.
+
+Sa teinte vient du registre (`--voile`), pas du fichier : crème sur fond clair,
+bleu nuit sur fond nuit. Le mode de fusion de la lumière orange suit aussi le
+registre — `multiply` en clair, `screen` en nuit — et à deux fois moins
+d'opacité : un `multiply` orange sur une photographie en lumière du jour teinte
+tout le cadre en pêche.
+
+Le voile sous la barre de navigation suit la même règle. Il était noir ; sous une
+typographie bleu nuit, un voile noir rendait l'en-tête **moins** lisible.
 
 ### Interdits tenus
 
-Aucun `border-radius` (sauf le point ON AIR et les pastilles de lecture,
-circulaires par nature), aucun dégradé décoratif hors les halos de la charte,
-aucune ombre, aucun logotype de plateforme, aucune icône hors le micro de marque
-et les flèches typographiques.
+Aucun `border-radius` hors la carte d'épisode et les pastilles circulaires par
+nature, aucun dégradé décoratif hors les halos et le champ de la charte, aucune
+ombre, aucun logotype de plateforme, aucune icône hors le micro de marque et les
+flèches typographiques.
 
 ---
 
@@ -306,21 +371,37 @@ sans supprimer sa page — utile pour préparer une publication.
 
 ## 7. Cartes de partage générées
 
-[`app/episodes/[slug]/opengraph-image.tsx`](app/episodes/%5Bslug%5D/opengraph-image.tsx)
-compose la carte comme la couverture du deck : noir, halo de braise, portrait
-traité à droite, logotype avec son R retourné, numéro, invité, fonction,
-entreprise, titre, adresse permanente, durée.
+Deux cartes, une par registre :
 
-Trois contraintes de Satori conditionnent la composition — elles sont commentées
-dans le fichier, et elles se paient cher si on les oublie :
+- [`app/opengraph-image.tsx`](app/opengraph-image.tsx) — la pochette claire :
+  fond crème, lavis terre cuite, logotype bleu nuit, « Avec Frédéric
+  Cronenberger ». Sert la home, l'archive, À propos et Participer.
+- [`app/episodes/[slug]/opengraph-image.tsx`](app/episodes/%5Bslug%5D/opengraph-image.tsx)
+  — la **carte d'épisode du fichier de charte**, portée à l'identique : champ
+  orange, carte arrondie, photographie à gauche sous le logotype augmenté du nom
+  du client, panneau de texte à droite sur l'orange assombri, numéro, crédit,
+  durée, adresse permanente.
+
+Quatre contraintes de Satori conditionnent la composition — elles sont commentées
+dans les fichiers, et elles se paient cher si on les oublie :
 
 1. **Les dégradés doivent passer par `backgroundImage`.** Dans le raccourci
    `background`, ils sont silencieusement ignorés — le calque est simplement
    absent, sans erreur.
 2. **Un élément positionné en absolu doit porter des dimensions explicites.**
    `inset: 0` seul ne suffit pas : le calque n'est pas peint.
-3. **`filter` n'existe pas.** Le traitement photographique de la charte est donc
-   reconstitué en calques de dégradés posés sur l'`<img>`.
+3. **`filter` n'existe pas**, et un calque *frère* posé sur une `<img>` ne se
+   peint pas au-dessus d'elle. Le traitement photographique de la charte est donc
+   reconstitué en calques de dégradés **imbriqués**.
+4. **Un nœud de texte à plusieurs enfants lève une exception.** Chaque ligne est
+   une chaîne assemblée en amont — sauf le R retourné, qui a besoin de ses propres
+   balises.
+
+Une cinquième leçon, mesurée : **Satori quantifie ses dégradés par paliers.** Sur
+un fond clair, un dégradé radial y laisse voir des anneaux concentriques quel que
+soit le nombre d'arrêts. Le lavis de la pochette claire est donc *linéaire* — les
+mêmes paliers répartis sur une diagonale, où l'œil ne les organise plus en
+cibles.
 
 Les polices sont lues sur le disque au build, jamais sur le réseau : la
 construction reste possible hors ligne. Satori n'instancie pas les axes d'une
@@ -412,7 +493,13 @@ Six épisodes, sujets cohérents avec le sujet du podcast : industrie et
 décarbonation, design et fabrication, retail, distribution B2B et digital,
 entrepreneuriat, marque et culture.
 
-**Entreprises et invités sont fictifs.** Les ressources citées dans « Les liens de
+**Entreprises et invités sont fictifs.** Le fichier de charte cite un premier
+épisode réel — Café Reck, avec Thomas Riegert, artisan torréfacteur, 45 min. Il
+n'est **pas** dans les données de démonstration : la convention de nommage est en
+place, mais écrire une description, une biographie ou un extrait pour une
+personne et une entreprise réelles demande leur contenu, pas le mien. L'ajouter
+ne coûte qu'une entrée dans [`content/episodes.ts`](content/episodes.ts).
+ Les ressources citées dans « Les liens de
 l'épisode » pointent en revanche vers des **sources réelles** (ADEME, Insee,
 Fevad, IFM, FEBEA, Bpifrance, Mobilier National, Cité du design, LSA, Stratégies,
 Dezeen, L'Usine Digitale, Cosmetic Valley…), pour que le bloc se comporte comme
@@ -432,7 +519,10 @@ prototype n'appelle aucun CDN externe.
 2. **`youtubeId` est le même identifiant partout**, et les URLs de plateforme sont
    des exemples. Ce sont exactement les six champs que l'on renseigne à la
    publication.
-3. **La police de marque n'est pas embarquée** — voir §2.
+3. **Les deux polices de marque ne sont pas embarquées** — PP Neue Machina *et*
+   PP Neue Montreal sont sous licence commerciale. Il faut leurs `.woff2`, plus
+   des instances statiques de la Machina pour les cartes de partage. Voir §2 et
+   §7.
 
 Le formulaire de participation valide côté serveur puis journalise
 ([`app/api/participer/route.ts`](app/api/participer/route.ts)) : c'est là qu'on

@@ -65,15 +65,23 @@ export async function imageEnDataUri(cheminPublic: string): Promise<string> {
 export const OG_TAILLE = { width: 1200, height: 630 } as const;
 export const OG_TYPE = 'image/png';
 
-/** Palette de la charte, pour les cartes générées. */
+/** Palette de la charte, relevée au pixel sur la planche de nuancier. */
 export const OG_COULEURS = {
+  creme: '#ece9e4',
+  encre: '#0e0f13',
   nuit: '#1a243d',
   nuitProfond: '#141b2e',
+  ardoise: '#1d2c3e',
   blanc: '#ffffff',
-  brume: '#b0c0d0',
+  brume: '#b1bfcf',
   brumeSourde: '#8490a4',
-  encre: '#121212',
-  orange: '#c4662e',
+  orange: '#bd5e27',
+  /** Terre cuite assombrie — la seule qui porte du texte sur crème (4,6:1). */
+  orangeFonce: '#a94e21',
+  /** Gris bleuté du texte secondaire sur crème (5,4:1). */
+  plomb: '#565e6c',
+  /** Panneau assombri des cartes — c'est lui qui donne 6,5:1 au blanc. */
+  panneau: '#97461c',
   orangeTexte: '#d17946',
   orangeClair: '#e08a55',
 } as const;
@@ -88,10 +96,34 @@ export const OG_COULEURS = {
  * explicites, sinon le calque n'est pas peint du tout.
  */
 export const CHAMP_ORANGE =
-  'radial-gradient(126% 116% at 18% 0%, #e08a55 0%, #d17946 38%, #c4662e 100%)';
+  'radial-gradient(126% 116% at 18% 0%, #e08a55 0%, #cc6c33 38%, #bd5e27 100%)';
 
-/** Halo orange sur fond bleu nuit, pour la carte par défaut. */
+/**
+ * Voile crème posé sur la photographie de la carte — le pendant de
+ * `.photo--voile` en registre clair, pour que le logotype bleu nuit tienne quelle
+ * que soit l'image fournie. Deux dégradés, comme en CSS.
+ */
+export const VOILE_CREME = [
+  'linear-gradient(100deg, rgba(236,233,228,0.94) 0%, rgba(236,233,228,0.8) 30%, rgba(236,233,228,0.34) 62%, rgba(236,233,228,0) 100%)',
+  'linear-gradient(180deg, rgba(236,233,228,0.5) 0%, rgba(236,233,228,0.12) 38%, rgba(236,233,228,0.62) 100%)',
+].join(', ');
+
+/**
+ * Halo terre cuite sur fond crème — la pochette claire de la charte.
+ * Opacités volontairement basses : sur un fond clair, les valeurs du registre
+ * bleu nuit feraient une tache.
+ */
+/* Sur la carte claire, le halo est **linéaire**, pas radial.
+   Satori quantifie ses dégradés par paliers : sur un fond clair, un dégradé
+   radial y laisse voir des anneaux concentriques, quel que soit le nombre
+   d'arrêts. Un dégradé linéaire répartit les mêmes paliers sur une diagonale,
+   où l'œil ne les organise plus en cibles. */
+export const HALO_CREME = [
+  'linear-gradient(118deg, rgba(236,233,228,0) 0%, rgba(236,233,228,0) 42%, rgba(189,94,39,0.05) 72%, rgba(189,94,39,0.11) 100%)',
+].join(', ');
+
+/** Halo orange sur fond bleu nuit, pour les compositions en registre nuit. */
 export const HALO_NUIT = [
-  'radial-gradient(58% 76% at 88% 32%, rgba(224,138,85,0.32) 0%, rgba(196,102,46,0.36) 28%, rgba(196,102,46,0.16) 54%, rgba(26,36,61,0) 84%)',
+  'radial-gradient(58% 76% at 88% 32%, rgba(224,138,85,0.32) 0%, rgba(189,94,39,0.36) 28%, rgba(189,94,39,0.16) 54%, rgba(26,36,61,0) 84%)',
   'radial-gradient(46% 54% at 96% 76%, rgba(35,46,76,0.7) 0%, rgba(26,36,61,0) 78%)',
 ].join(', ');

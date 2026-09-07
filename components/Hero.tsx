@@ -4,7 +4,7 @@ import { SplitLogo } from '@/components/SplitLogo';
 import { HostSignature } from '@/components/Wordmark';
 import { site } from '@/content/site';
 import type { Episode } from '@/content/types';
-import { guestLine } from '@/lib/episodes';
+import { episodeName } from '@/lib/episodes';
 import { formatDate, formatDuration, formatEpisodeRef } from '@/lib/format';
 
 /**
@@ -55,10 +55,14 @@ export function Hero({ episode }: { episode: Episode }) {
         <div className="hero__bloc">
           <p className="label hero__numero tabulaire">Épisode {numero}</p>
 
+          {/* Le nom de l'épisode dans la formule de la charte — « Derrière Café
+              Reck, il y a Thomas Riegert ». Elle remplace le couple société /
+              invité de la version précédente, qui répétait deux fois la même
+              information sur deux lignes. La fonction suit seule, en crédit. */}
           <p className="hero__invite h2" data-reveal-mask="pending">
-            <span>{episode.guest.company}</span>
+            <span>{episodeName(episode)}</span>
           </p>
-          <p className="hero__fonction lede">{guestLine(episode)}</p>
+          <p className="hero__fonction lede">{episode.guest.role}</p>
 
           <h1 id="titre-hero" className="hero__titre" data-reveal-mask="pending">
             <span>{episode.title}</span>

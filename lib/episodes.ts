@@ -82,17 +82,39 @@ export async function getTopics(): Promise<string[]> {
  * ------------------------------------------------------------------------ */
 
 /**
- * Identité d'un épisode telle que la charte la compose sur les pochettes et
- * les cartes de partage : le nom du média, puis le client.
+ * Le verrou graphique de la charte : le nom du client devient la troisième ligne
+ * du logotype.
  *
- *   « Derrière la marque / Café Reck »
+ *   DERᴙIÈRE
+ *   LA MARQUE
+ *   RECK
  *
- * Elle sert là où le contexte ne dit pas déjà de quel média il s'agit — carte
- * de partage, pochette, publication. Sur le site, l'en-tête porte déjà le
- * logotype : la répéter dans chaque hero serait redondant.
+ * C'est ce que montrent la carte d'épisode et la pochette du fichier — le média
+ * ne se juxtapose pas au client, il l'absorbe. Sert aux pochettes, aux cartes de
+ * partage et aux publications. Sur le site, l'en-tête porte déjà le logotype :
+ * le répéter dans chaque hero serait redondant.
  */
 export function episodeIdentity(episode: Pick<Episode, 'guest'>): string {
-  return `Derrière la marque / ${episode.guest.company}`;
+  return `Derrière la marque ${episode.guest.company}`;
+}
+
+/**
+ * Le titre de l'épisode tel qu'il part sur les plateformes :
+ *
+ *   « Derrière Café Reck, il y a Thomas Riegert »
+ *
+ * Relevé tel quel sur la planche Apple Podcasts du fichier de charte, où le
+ * gabarit est écrit en clair : « DERRIÈRE LA MARQUE XX, il y a XXXX ». Le nom du
+ * média est un début de phrase que chaque épisode termine — c'est le ressort
+ * éditorial, et il ne se laisse pas remplacer par un titre libre.
+ *
+ * Le site garde en plus le titre rédactionnel (`episode.title`) pour son grand
+ * titre : c'est ce que la charte affiche sur la carte, sous le nom de l'épisode.
+ * Cette formule-là sert partout où le contexte ne dit pas déjà de quel média il
+ * s'agit — flux RSS, carte de partage, référencement, données structurées.
+ */
+export function episodeName(episode: Pick<Episode, 'guest'>): string {
+  return `Derrière ${episode.guest.company}, il y a ${episode.guest.name}`;
 }
 
 /**
@@ -115,6 +137,16 @@ function lowerFirst(valeur: string): string {
   // nom propre : on n'y touche pas.
   if (valeur[1] === valeur[1]?.toUpperCase() && /[A-ZÀ-Ý]/.test(valeur[1] ?? '')) return valeur;
   return valeur[0]!.toLowerCase() + valeur.slice(1);
+}
+
+/**
+ * L'autre tournure de la charte, celle des cartes : « Avec Thomas Riegert,
+ * artisan torréfacteur ». Les deux coexistent dans le fichier et ne disent pas la
+ * même chose — « il y a » est la voix du titre, qui révèle quelqu'un derrière une
+ * marque ; « Avec » est le crédit, qui l'attribue.
+ */
+export function guestCredit(episode: Pick<Episode, 'guest'>): string {
+  return `Avec ${episode.guest.name}, ${lowerFirst(episode.guest.role)}`;
 }
 
 /** URL canonique et permanente d'un épisode. */

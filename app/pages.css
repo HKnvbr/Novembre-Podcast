@@ -50,16 +50,16 @@
   gap: clamp(2rem, 8vh, 6rem);
 }
 
-.hero__surtitre { color: var(--blanc); }
+.hero__surtitre { color: var(--texte); }
 .hero__separateur { padding-inline: 0.7em; opacity: 0.45; }
 
 .hero__bloc { max-width: min(100%, 60rem); }
 
-.hero__numero { color: var(--brume); padding-bottom: 1.25rem; }
+.hero__numero { color: var(--texte-faible); padding-bottom: 1.25rem; }
 
 .hero__invite { letter-spacing: -0.04em; }
 
-.hero__fonction { color: var(--brume); padding-top: 0.35rem; }
+.hero__fonction { color: var(--texte-faible); padding-top: 0.35rem; }
 
 /* Un cran sous l'échelle display : le titre du hero doit tenir en trois lignes
    au maximum, sur toutes les longueurs de titre du corpus. */
@@ -70,7 +70,7 @@
   max-width: 24ch;
 }
 
-.hero__infos { color: var(--brume); padding-top: clamp(1.25rem, 3vh, 2rem); }
+.hero__infos { color: var(--texte-faible); padding-top: clamp(1.25rem, 3vh, 2rem); }
 
 .hero__actions {
   display: flex;
@@ -84,15 +84,25 @@
 .hero__signe {
   padding-inline: var(--outer);
   padding-bottom: clamp(1rem, 3vh, 2.5rem);
-  color: var(--blanc);
+  color: var(--texte);
   /* Une seule ligne, calibrée pour occuper la largeur utile sans déborder :
      18 signes de Sora 800 à 6.4vw remplissent le cadre à 1440 comme à 390. */
   font-size: clamp(1.35rem, 6.4vw, 9rem);
   line-height: 0.9;
-  overflow: hidden;
 }
 
-.signe__ligne { display: block; white-space: nowrap; }
+/* Le volet qui masque les lettres avant leur apparition est porté par la ligne,
+   pas par le bloc : posé sur le bloc, il coupait l'accent de « DERᴙIÈRE ». La
+   ligne se rembourre puis se rétracte de la même valeur, exactement comme la
+   mécanique de `[data-reveal-mask]` — le volet gagne la place de l'accent sans
+   déplacer la ligne d'un pixel. */
+.signe__ligne {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 0.18em;
+  margin-top: -0.18em;
+}
 .hero__signe .lettre { will-change: transform; }
 
 /* Signature de l'animateur sous les boutons du hero */
@@ -261,8 +271,8 @@
   color: var(--fond);
 }
 
-.lecteur[data-lecture] .lecteur__glyphe { border-color: var(--orange); color: var(--orange-clair); }
-.lecteur[data-lecture] .lecteur__intitule { color: var(--orange-texte); }
+.lecteur[data-lecture] .lecteur__glyphe { border-color: var(--orange); color: var(--accent-texte); }
+.lecteur[data-lecture] .lecteur__intitule { color: var(--accent-texte); }
 
 .lecteur__intitule { color: var(--texte-faible); }
 
@@ -310,7 +320,7 @@
 }
 
 .lecteur__onde:has(.lecteur__curseur:focus-visible) {
-  outline: 2px solid var(--orange-clair);
+  outline: 2px solid var(--accent-texte);
   outline-offset: 4px;
 }
 
@@ -402,7 +412,7 @@
   content: '';
   position: absolute;
   inset: 0 calc(var(--outer) * -0.5);
-  background: var(--nuit-haute);
+  background: var(--fond-creuse);
   transform: scaleY(0);
   transform-origin: bottom;
   transition: transform var(--t-moyen) var(--ease-out);
@@ -623,14 +633,24 @@
   gap: clamp(2.5rem, 8vh, 6rem);
 }
 
-.ephero__fil { display: flex; align-items: center; gap: 0.7em; color: var(--brume); }
-.ephero__fil [aria-current] { color: var(--blanc); }
+.ephero__fil { display: flex; align-items: center; gap: 0.7em; color: var(--texte-faible); }
+.ephero__fil [aria-current] { color: var(--texte); }
 
 .ephero__bloc { max-width: min(100%, 24ch + 32vw); }
-.ephero__numero { color: var(--brume); padding-bottom: 1.1rem; }
-.ephero__fonction { color: var(--brume); padding-top: 0.35rem; }
-.ephero__titre { --espace-avant: clamp(1.1rem, 3vh, 2.25rem); max-width: 26ch; }
-.ephero__infos { color: var(--brume); padding-top: clamp(1.25rem, 3vh, 2rem); }
+.ephero__numero { color: var(--texte-faible); padding-bottom: 1.1rem; }
+.ephero__fonction { color: var(--texte-faible); padding-top: 0.35rem; }
+/* Le titre du hero d'épisode ne suit pas l'échelle `display` : sa colonne est
+   plus étroite que la page, et à 6,6vw le mot « communication » y était coupé
+   par le volet d'apparition — un mot plus long que sa colonne ne se replie pas.
+   L'échelle est donc calée sur la colonne, et `overflow-wrap` reste en dernier
+   recours pour qu'un mot plus long encore se casse au lieu de disparaître. */
+.ephero__titre {
+  --espace-avant: clamp(1.1rem, 3vh, 2.25rem);
+  max-width: 26ch;
+  font-size: clamp(1.9rem, 5vw, 6rem);
+  overflow-wrap: break-word;
+}
+.ephero__infos { color: var(--texte-faible); padding-top: clamp(1.25rem, 3vh, 2rem); }
 
 .epcorps__grille {
   display: grid;
@@ -745,8 +765,8 @@
 .suite__contenu { display: flex; flex-direction: column; gap: 0.45rem; max-width: min(100%, 30rem); }
 .suite__lien[data-sens='suivant'] .suite__contenu { margin-left: auto; }
 
-.suite__sens { color: var(--brume); padding-bottom: 0.75rem; }
-.suite__numero { color: var(--brume); }
+.suite__sens { color: var(--texte-faible); padding-bottom: 0.75rem; }
+.suite__numero { color: var(--texte-faible); }
 .suite__titre { padding-top: 0.35rem; text-wrap: balance; }
 .suite__invite { padding-top: 0.5rem; }
 
@@ -871,8 +891,8 @@ a:hover .fleche--gauche { transform: translateX(-0.35em); }
   appearance: none;
 }
 
-.champ__saisie:focus { outline: 0; border-bottom-color: var(--orange-texte); border-bottom-width: 2px; padding-bottom: calc(0.55rem - 1px); }
-.champ__saisie:focus-visible { outline: 2px solid var(--orange-clair); outline-offset: 4px; }
+.champ__saisie:focus { outline: 0; border-bottom-color: var(--accent-texte); border-bottom-width: 2px; padding-bottom: calc(0.55rem - 1px); }
+.champ__saisie:focus-visible { outline: 2px solid var(--accent-texte); outline-offset: 4px; }
 
 .champ__saisie--zone { resize: vertical; min-height: 7rem; font-size: var(--fs-body); }
 .champ__saisie::placeholder { color: var(--texte-faible); opacity: 0.72; }
@@ -933,4 +953,130 @@ a:hover .fleche--gauche { transform: translateX(-0.35em); }
   .introuvable__lien { grid-template-columns: minmax(0, 1fr) auto; }
   .introuvable__lien .label { grid-column: 1 / -1; }
   .introuvable__lien .meta { grid-column: 1; }
+}
+
+/* ================================================ carte d'épisode ======== */
+
+/* Reprise de la planche : un cadre arrondi coupé en deux, la photographie sous
+   le logotype augmenté du client, le panneau de texte sur l'orange assombri.
+   C'est le seul arrondi du système, et le seul aplat de couleur pleine. */
+/* La carte est un conteneur de requête : son logotype se mesure à elle. */
+.carte {
+  position: relative;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+  border-radius: var(--rayon-carte);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Le lien couvre la carte entière : la cible est la carte, pas un mot dedans.
+   Il ne porte que le nom accessible — tout le texte visible est déjà là. */
+.carte__lien {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.carte__lien:focus-visible {
+  outline-offset: -4px;
+  border-radius: var(--rayon-carte);
+}
+
+.carte__visuel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.5rem;
+  padding: clamp(1rem, 1.8vw, 1.6rem);
+  /* La photographie de la charte est claire et le logotype s'y pose en bleu
+     nuit : le voile est donc crème, et le contexte de couleur du visuel repasse
+     en registre clair alors même que la carte est sur orange. */
+  --fond: var(--creme);
+  --texte: var(--nuit);
+  --voile: 236, 233, 228;
+  color: var(--texte);
+}
+
+.carte__visuel img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.carte__visuel .logo,
+.carte__etiquette,
+.carte__avec { position: relative; z-index: 2; }
+
+.carte__visuel .logo__nom {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+/* « LE PODCAST » en pastille orange, comme sur la planche. Sur cet aplat c'est
+   le crème qui porte le libellé — l'orange assombri lui donne 5,4:1. */
+.carte__etiquette {
+  align-self: end;
+  justify-self: start;
+  background: var(--brasier-panneau);
+  color: var(--creme);
+  padding: 0.4em 0.7em;
+}
+
+.carte__avec {
+  font-size: var(--fs-small);
+  font-weight: 300;
+}
+
+.carte__avec strong { font-weight: 500; }
+
+/* --- le panneau ---------------------------------------------------------- */
+
+.carte__panneau {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: clamp(1.4rem, 2.6vw, 2.6rem);
+}
+
+.carte__numero { color: var(--texte-faible); }
+
+.carte__nom {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.carte__credit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28em;
+  letter-spacing: 0.14em;
+}
+
+.carte__credit strong { font-weight: 500; }
+.carte__role { color: var(--texte-faible); }
+
+.carte__duree {
+  margin-top: auto;
+  color: var(--texte-faible);
+}
+
+/* Au survol, l'image respire — le seul mouvement de la carte. */
+.carte:hover .carte__visuel img { transform: scale(1.03); }
+
+@media (max-width: 767px) {
+  .carte { grid-template-columns: minmax(0, 1fr); }
+  .carte__visuel { aspect-ratio: 3 / 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte:hover .carte__visuel img { transform: none; }
 }

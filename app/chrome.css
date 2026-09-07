@@ -16,7 +16,15 @@
   line-height: 0.9;
 }
 
-.logo__descripteur { color: var(--orange-texte); }
+.logo__descripteur { color: var(--accent-texte); }
+
+/* Troisième ligne du logotype : le nom du client. Elle se compose dans la même
+   graisse que le nom du média — c'est ce qui fait qu'elle en fait partie — mais
+   d'un cran plus petit, comme sur la planche : le média reste le titulaire. */
+.logo__ligne--marque {
+  font-size: 0.72em;
+  letter-spacing: -0.01em;
+}
 
 /* Version barre de navigation : micro, nom sur une ligne, descripteur à côté. */
 .logo--entete {
@@ -68,6 +76,25 @@
 
 .logo--lockup .logo__descripteur { letter-spacing: 0.22em; }
 
+/* Version carte : le lockup se pose sur la photographie, à l'échelle du cadre. */
+/* Version carte : le logotype se mesure à la carte, pas à la fenêtre — d'où les
+   unités de conteneur. Une carte posée dans une colonne de 560 px et la même
+   carte en pleine largeur doivent porter le même logotype à l'échelle.
+
+   La troisième ligne, elle, est laissée libre de passer à la ligne : « Reck »
+   tient sur une ligne dans le fichier de charte, « Nord Cosmetics » non, et un
+   nom de client plus large que le nom du média casserait le lockup. */
+.logo--carte .logo__nom {
+  font-size: clamp(0.95rem, 5.4cqw, 2.1rem);
+  white-space: normal;
+}
+
+.logo--carte .logo__ligne--marque {
+  font-size: 0.5em;
+  letter-spacing: 0.01em;
+  padding-top: 0.15em;
+}
+
 /* --------------------------------------------------- signature animateur */
 
 .signature {
@@ -77,7 +104,7 @@
 }
 
 .signature__avec { color: var(--texte); }
-.signature__nom { color: var(--orange-texte); }
+.signature__nom { color: var(--accent-texte); }
 
 /* ------------------------------------------------------------ en-tête --- */
 
@@ -85,7 +112,7 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 100;
-  color: var(--blanc);
+  color: var(--texte);
 }
 
 .entete__barre {
@@ -102,8 +129,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--nuit);
-  border-bottom: 1px solid var(--filet);
+  background: var(--fond);
+  border-bottom: 1px solid var(--regle);
   opacity: 0;
   transform: translateY(-100%);
   transition: opacity var(--t-moyen) var(--ease), transform var(--t-moyen) var(--ease-out);
@@ -112,14 +139,22 @@
 
 .entete[data-decolle] .entete__barre::before { opacity: 1; transform: none; }
 
-/* Voile discret quand la barre est posée sur une photographie : le cadrage
-   change d'un épisode à l'autre, et en mobile la zone haute peut être claire. */
+/* Voile sous la barre quand elle est posée sur une photographie : le cadrage
+   change d'un épisode à l'autre, et rien ne garantit que la zone haute de
+   l'image soit claire.
+
+   Le voile prend la teinte du registre (`--voile`), et c'est ce qui a changé
+   avec la charte révisée : un voile noir sous une typographie bleu nuit rendait
+   l'en-tête moins lisible, pas plus. */
 .entete__barre::after {
   content: '';
   position: absolute;
   inset: 0 0 auto;
-  height: calc(var(--header) * 1.9);
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0) 100%);
+  height: calc(var(--header) * 2.1);
+  background: linear-gradient(180deg,
+    rgba(var(--voile), 0.9) 0%,
+    rgba(var(--voile), 0.52) 52%,
+    rgba(var(--voile), 0) 100%);
   transition: opacity var(--t-moyen) var(--ease);
   pointer-events: none;
   z-index: -2;
@@ -136,15 +171,21 @@
   gap: clamp(1.25rem, 2.2vw, 2.5rem);
 }
 
-/* Le bouton d'écoute est la seule surface rouge de la barre. */
+/* Le bouton d'écoute de l'en-tête est la seule note orange de la barre. Son
+   remplissage prend l'orange assombri de la charte, pas l'orange de marque :
+   c'est ce qui fait passer le blanc du libellé de 4,4:1 à 6,5:1 — un libellé en
+   petites capitales de 0,7rem a besoin du seuil texte, pas du seuil graphique. */
 .entete__ecouter {
   padding: 0.75em 1.35em;
   border-color: var(--orange);
-  color: var(--orange-clair);
+  color: var(--accent-texte);
 }
 
-.entete__ecouter::before { background: var(--orange); }
-.entete__ecouter:hover, .entete__ecouter:focus-visible { color: var(--blanc); }
+.entete__ecouter::before { background: var(--brasier-panneau); }
+.entete__ecouter:hover, .entete__ecouter:focus-visible {
+  color: var(--blanc);
+  border-color: var(--brasier-panneau);
+}
 
 .entete__bascule { display: none; }
 
@@ -155,11 +196,11 @@
 
 /* ------------------------------------------------------- menu mobile --- */
 
+/* Le menu mobile bascule dans le registre nuit — la classe `nuit` est posée sur
+   l'élément côté composant, tous les jetons suivent. */
 .menu {
   position: fixed;
   inset: 0;
-  background: var(--nuit);
-  color: var(--blanc);
   padding: calc(var(--header) + 2rem) var(--outer) 2rem;
   display: flex;
   flex-direction: column;

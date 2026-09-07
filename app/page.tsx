@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { EpisodeCard } from '@/components/EpisodeCard';
 import { EpisodeList } from '@/components/EpisodeList';
 import { EpisodeMedia } from '@/components/EpisodeMedia';
 import { Hero } from '@/components/Hero';
@@ -30,7 +30,7 @@ export default async function HomePage() {
       <Hero episode={dernier} />
 
       {/* ------------------------------------------------- la promesse --- */}
-      <section className="manifeste section braise braise--gauche" aria-labelledby="titre-manifeste">
+      <section className="manifeste section nuit braise braise--gauche" aria-labelledby="titre-manifeste">
         <div className="shell manifeste__corps">
           <h2 id="titre-manifeste" className="display manifeste__titre">
             <span data-reveal-mask="pending">
@@ -55,14 +55,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div className="surface">
+      <div className="nuit surface">
         <Ticker items={site.ticker} />
       </div>
 
       {/* -------------------------------------------- dernier épisode --- */}
       <section
         id="dernier-episode"
-        className="dernier section surface"
+        className="dernier section"
         aria-labelledby="titre-dernier"
       >
         <div className="shell">
@@ -77,18 +77,9 @@ export default async function HomePage() {
 
           <div className="dernier__corps">
             <div className="dernier__visuel" data-reveal="pending">
-              <div className="photo photo--braise dernier__photo">
-                <Image
-                  src={dernier.coverImage.src}
-                  alt={dernier.coverImage.alt}
-                  width={dernier.coverImage.width}
-                  height={dernier.coverImage.height}
-                  sizes="(max-width: 899px) 100vw, 38vw"
-                />
-              </div>
+              <EpisodeCard episode={dernier} />
               <p className="label dernier__legende">
-                {dernier.guest.name} — {dernier.guest.company}
-                {dernier.recordedAt && <> · {dernier.recordedAt}</>}
+                Enregistré {dernier.recordedAt ? `à ${dernier.recordedAt}` : 'sur place'}
               </p>
             </div>
 
@@ -132,7 +123,7 @@ export default async function HomePage() {
       </div>
 
       {/* --------------------------------------------- tous les épisodes */}
-      <section className="tous section" aria-labelledby="titre-tous">
+      <section className="tous section surface" aria-labelledby="titre-tous">
         <div className="shell">
           <header className="tous__entete">
             <h2 id="titre-tous" className="display tous__titre" data-reveal-mask="pending">

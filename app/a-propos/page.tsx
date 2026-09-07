@@ -59,12 +59,12 @@ export default async function AProposPage() {
         </div>
       </section>
 
-      <div className="surface">
+      <div className="nuit surface">
         <Ticker items={villes.length > 0 ? villes : site.ticker} duration={42} />
       </div>
 
       {/* ---------------------------------------------------- animateur */}
-      <section className="propos__hote section surface" aria-labelledby="titre-hote">
+      <section className="propos__hote section nuit braise braise--gauche" aria-labelledby="titre-hote">
         <div className="shell propos__grille">
           <h2 id="titre-hote" className="label propos__etiquette">
             L’animateur

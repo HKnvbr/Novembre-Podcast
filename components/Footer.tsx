@@ -4,7 +4,7 @@ import { HostSignature, Wordmark } from './Wordmark';
 
 export function Footer() {
   return (
-    <footer id="pied" className="pied braise braise--basse">
+    <footer id="pied" className="pied nuit braise braise--basse">
       <div className="shell">
         <div className="pied__haut">
           <p className="pied__promesse display">

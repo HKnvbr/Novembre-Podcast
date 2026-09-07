@@ -87,7 +87,7 @@ export function Header() {
         </button>
       </div>
 
-      <div id="menu-mobile" className="menu braise braise--basse" hidden={!ouvert}>
+      <div id="menu-mobile" className="menu nuit braise braise--basse" hidden={!ouvert}>
         <nav aria-label="Navigation mobile">
           <ul>
             {site.nav.map((item, i) => (

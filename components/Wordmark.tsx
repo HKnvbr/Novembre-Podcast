@@ -13,13 +13,27 @@ import { MicroIcon } from './MicroIcon';
  * `taille` :
  *  - `entete`  : version compacte sur une ligne, pour la barre de navigation
  *  - `lockup`  : version empilée avec le micro et le descripteur
+ *
+ * `marque` ajoute une troisième ligne au logotype. C'est le verrou de la charte
+ * révisée : sur la carte d'épisode et sur la pochette, le nom du client **entre
+ * dans** le logotype au lieu de se poser à côté.
+ *
+ *   DERᴙIÈRE
+ *   LA MARQUE
+ *   RECK
  */
 export function Wordmark({
   taille = 'entete',
   avecMicro = true,
+  avecDescripteur = true,
+  marque,
+  className,
 }: {
   taille?: 'entete' | 'lockup';
   avecMicro?: boolean;
+  avecDescripteur?: boolean;
+  marque?: string;
+  className?: string;
 }) {
   const nom = (
     <span className="logo__nom" aria-hidden="true">
@@ -27,16 +41,23 @@ export function Wordmark({
         Der<span className="miroir">r</span>ière
       </span>
       <span className="logo__ligne">la marque</span>
+      {marque && <span className="logo__ligne logo__ligne--marque">{marque}</span>}
     </span>
   );
 
   return (
-    <span className={`logo logo--${taille}`} role="img" aria-label={site.name}>
+    <span
+      className={`logo logo--${taille}${className ? ` ${className}` : ''}`}
+      role="img"
+      aria-label={marque ? `${site.name} ${marque}` : site.name}
+    >
       {avecMicro && <MicroIcon className="logo__micro" />}
       {nom}
-      <span className="logo__descripteur label" aria-hidden="true">
-        {site.descriptor}
-      </span>
+      {avecDescripteur && (
+        <span className="logo__descripteur label" aria-hidden="true">
+          {site.descriptor}
+        </span>
+      )}
     </span>
   );
 }

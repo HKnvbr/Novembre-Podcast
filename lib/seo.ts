@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { site } from '@/content/site';
 import type { Episode } from '@/content/types';
-import { canonicalUrl, guestLine } from './episodes';
+import { canonicalUrl, episodeName, guestLine } from './episodes';
 import { formatEpisodeNumber } from './format';
 
 /**
@@ -47,7 +47,9 @@ export function episodeMetadata(episode: Episode): Metadata {
   // Le titre de partage porte le client, comme les pochettes du fichier de
   // charte — c'est le nom qu'on reconnaît dans un fil. Le gabarit de
   // `layout.tsx` y ajoute déjà le nom du média, on ne le répète pas ici.
-  const title = episode.seo?.title ?? `${episode.guest.company} — ${episode.title}`;
+  // La formule de la charte fait le titre de partage : « Derrière Café Reck, il
+  // y a Thomas Riegert ». Le gabarit du layout y ajoute le nom du média.
+  const title = episode.seo?.title ?? episodeName(episode);
   const description =
     episode.seo?.description ?? `Épisode ${number} · ${guestLine(episode)} · ${episode.excerpt}`;
 

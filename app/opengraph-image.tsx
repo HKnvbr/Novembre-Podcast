@@ -1,13 +1,16 @@
 import { ImageResponse } from 'next/og';
 import { site } from '@/content/site';
-import { HALO_NUIT, OG_COULEURS as C, OG_TAILLE, OG_TYPE, chargerPolices } from '@/lib/og';
+import { HALO_CREME, OG_COULEURS as C, OG_TAILLE, OG_TYPE, chargerPolices } from '@/lib/og';
 
 /**
  * Carte de partage par défaut — home, à propos, participer, archive.
  *
- * Composition reprise du fichier de charte : fond bleu nuit, halo orange, le
- * logotype avec son R retourné, puis les deux mentions côte à côte —
- * l'animateur et le descripteur — comme sur la pochette.
+ * Composition reprise du fichier de charte : la pochette y est claire, le
+ * logotype bleu nuit posé sur un fond crème que réchauffe un halo terre cuite.
+ * Suivent les deux mentions côte à côte — l'animateur et le descripteur.
+ *
+ * Le halo est nettement plus discret que son équivalent bleu nuit : sur un fond
+ * clair, un aplat orange à la même opacité se voit dix fois plus.
  */
 
 export const size = OG_TAILLE;
@@ -25,8 +28,8 @@ export default async function Image() {
           height: '100%',
           display: 'flex',
           position: 'relative',
-          background: C.nuit,
-          color: C.blanc,
+          background: C.creme,
+          color: C.nuit,
           fontFamily: 'Texte',
         }}
       >
@@ -39,7 +42,7 @@ export default async function Image() {
             width: 1200,
             height: 630,
             display: 'flex',
-            backgroundImage: HALO_NUIT,
+            backgroundImage: HALO_CREME,
           }}
         />
 
@@ -61,7 +64,7 @@ export default async function Image() {
                 fontWeight: 500,
                 letterSpacing: '0.21em',
                 textTransform: 'uppercase',
-                color: C.orangeTexte,
+                color: C.orangeFonce,
               }}
             >
               {site.descriptor}
@@ -102,13 +105,16 @@ export default async function Image() {
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'space-between',
-              borderTop: `1px solid rgba(176, 192, 208, 0.24)`,
+              borderTop: `1px solid rgba(29, 44, 62, 0.18)`,
               paddingTop: 24,
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', fontSize: 25, lineHeight: 1.2 }}>
-              <span style={{ color: C.blanc }}>{site.host.name}</span>
-              <span style={{ color: C.orangeTexte }}>{site.descriptor}</span>
+            {/* « Avec Frédéric Cronenberger » — la ligne de la pochette. Le
+                descripteur est déjà en haut de la carte : le répéter ici en
+                faisait la seule mention lue deux fois. */}
+            <div style={{ display: 'flex', gap: 9, fontSize: 26, lineHeight: 1.2 }}>
+              <span style={{ color: C.plomb }}>Avec</span>
+              <span style={{ color: C.nuit, fontWeight: 500 }}>{site.host.name}</span>
             </div>
             <div
               style={{
@@ -116,7 +122,7 @@ export default async function Image() {
                 fontWeight: 400,
                 letterSpacing: '0.19em',
                 textTransform: 'uppercase',
-                color: C.brumeSourde,
+                color: C.plomb,
               }}
             >
               {site.url.replace('https://', '')}

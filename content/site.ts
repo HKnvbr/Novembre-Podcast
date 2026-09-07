@@ -8,8 +8,12 @@ import type { PlatformKey } from './types';
 export const site = {
   /** Titre du média. Le logotype le dessine avec le R inversé (voir Wordmark). */
   name: 'Derrière la marque',
-  /** Descripteur du logotype, en capitales espacées. */
-  descriptor: 'Podcast Business',
+  /** Descripteur du logotype, en capitales espacées. Relevé sur le lockup du
+   *  fichier de charte, où il forme la ligne sous « la marque ». */
+  descriptor: 'Le podcast',
+  /** Catégorie de diffusion, telle qu'elle apparaît sur la planche Apple
+   *  Podcasts du fichier. Sert au flux RSS et aux données structurées. */
+  category: 'Business',
   /** Sigle court, pour les contextes contraints. */
   initials: 'DLM',
 

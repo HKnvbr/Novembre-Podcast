@@ -74,7 +74,7 @@ export default function ParticiperPage() {
         </div>
       </section>
 
-      <section className="participer__formulaire section surface" aria-labelledby="titre-formulaire">
+      <section className="participer__formulaire section nuit braise braise--basse" aria-labelledby="titre-formulaire">
         <div className="shell">
           <h2 id="titre-formulaire" className="h1 participer__question" data-reveal-mask="pending">
             <span>Racontez-nous.</span>

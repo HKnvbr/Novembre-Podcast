@@ -1,46 +1,79 @@
 /* ==========================================================================
    DERRIÈRE LA MARQUE — système visuel
    --------------------------------------------------------------------------
-   Repris du fichier de charte PODCAST : bleu nuit dominant, champ orange terre
-   cuite en second registre, deux familles typographiques, aucun arrondi,
-   filets 1px.
+   Relevé sur la page DLM du fichier de charte. Cinq valeurs, échantillonnées au
+   pixel sur la planche de nuancier plutôt qu'estimées à l'œil :
 
-   Toutes les valeurs sont relevées au pixel sur les planches — fond #1A243D,
-   texte #B0C0D0, secondaire #8490A4, champ orange #C4662E → #D17946 — puis
-   arbitrées par le contraste, ce qui explique les trois valeurs d'orange.
+     #0E0F13  encre        quasi noir, typographie sur photographie
+     #1D2C3E  bleu ardoise nuance du nuancier
+     #1A243D  bleu nuit    fond des planches et du second registre
+     #B1BFCF  brume        texte sur bleu nuit
+     #BD5E27  terre cuite  champ orange
+     #ECE9E4  crème        fond dominant
+
+   DEUX REGISTRES, et c'est la révision principale de cette charte : le registre
+   clair est désormais le registre par défaut — la planche de mise en situation,
+   les pochettes et la couverture posent toutes une typographie bleu nuit sur un
+   fond clair. Le bleu nuit reste un registre plein (`.nuit`), tenu pour les
+   bandes de respiration, le pied de page et la planche typographique ; le champ
+   orange (`.brasier`) reste la ponctuation.
+
+   Les valeurs de texte sont ensuite arbitrées par le contraste, pas par le
+   nuancier : c'est ce qui impose deux valeurs d'orange et un gris bleuté qui ne
+   figurent pas tels quels dans le fichier.
    ========================================================================== */
 
 :root {
-  /* --- Bleu nuit, la surface dominante -------------------------------- */
-  --nuit: #1a243d;           /* fond principal, relevé sur les planches */
-  --nuit-profond: #141b2e;   /* alternance de section */
+  /* --- Les cinq valeurs de la charte --------------------------------- */
+  --creme: #ece9e4;          /* fond dominant */
+  --creme-creuse: #e2ddd5;   /* alternance de section, même famille */
+  --encre: #0e0f13;          /* typographie sur photographie et sur orange */
+  --nuit: #1a243d;           /* registre plein, relevé sur les planches */
+  --nuit-profond: #141b2e;   /* alternance dans le registre nuit */
   --nuit-haute: #232e4c;     /* encarts, lecteur, champs de formulaire */
+  --ardoise: #1d2c3e;        /* nuance du nuancier, filets appuyés */
+  --brume: #b1bfcf;          /* texte sur bleu nuit — 8,2:1 */
+  --brume-sourde: #8490a4;   /* tertiaire sur bleu nuit — 4,8:1 */
+  --blanc: #ffffff;
 
-  --blanc: #ffffff;          /* titres — 15,4:1 sur nuit */
-  --brume: #b0c0d0;          /* texte courant et méta — 8,3:1 */
-  --brume-sourde: #8490a4;   /* tertiaire — 4,8:1 */
-  --encre: #121212;          /* logotype sur blanc, texte sur champ orange */
+  /* Gris bleuté du texte secondaire sur crème. Absent du nuancier : c'est le
+     bleu nuit désaturé jusqu'à 5,4:1, le point où il reste lisible en petit
+     corps sans concurrencer le titre. */
+  --plomb: #565e6c;
 
-  /* --- Orange terre cuite, le second registre ------------------------- */
-  /* Trois valeurs, imposées par le contraste : #C4662E est la couleur de
-     marque mais plafonne à 3,88:1 sur bleu nuit — suffisant pour un élément
-     graphique (seuil 3:1), insuffisant pour du texte. #D17946 atteint 4,79:1
-     et porte donc les mots ; #E08A55 monte à 5,82:1 pour les petites
-     capitales espacées, où la finesse du trait mange du contraste. */
-  --orange: #c4662e;         /* aplats, points, filets */
+  /* --- Terre cuite ---------------------------------------------------- */
+  /* Trois valeurs, imposées par le contraste. #BD5E27 est la couleur de marque
+     et le fond du champ, mais elle ne porte pas de texte : 3,6:1 sur crème,
+     3,5:1 sur bleu nuit — assez pour un point ou un filet (seuil 3:1), pas pour
+     un mot. #A94E21 atteint 4,6:1 sur crème et porte donc les mots du registre
+     clair ; #D17946 fait le même travail sur bleu nuit (4,8:1). */
+  --orange: #bd5e27;         /* aplats, points, filets */
+  --orange-fonce: #a94e21;   /* texte accentué sur crème */
   --orange-texte: #d17946;   /* texte accentué sur bleu nuit */
-  --orange-clair: #e08a55;   /* petites capitales, libellés */
+  --orange-clair: #e08a55;   /* petites capitales sur bleu nuit */
 
-  --filet: rgba(176, 192, 208, 0.18);
-  --filet-appuye: rgba(176, 192, 208, 0.34);
+  /* Panneau du champ orange. La charte assombrit son propre orange sous les
+     blocs de texte des cartes d'épisode — relevé à #97461C — ce qui fait passer
+     le blanc de 4,4:1 à 6,5:1. C'est la solution du fichier, pas la mienne. */
+  --brasier-panneau: #97461c;
 
-  /* Contexte de couleur courant — les composants n'ont jamais à connaître
-     leur fond, ils lisent ces jetons. */
-  --fond: var(--nuit);
-  --texte: var(--blanc);
-  --texte-faible: var(--brume);
+  --filet: rgba(29, 44, 62, 0.14);
+  --filet-appuye: rgba(29, 44, 62, 0.3);
+
+  /* --- Contexte de couleur courant ------------------------------------ */
+  /* Registre clair par défaut. Les composants n'ont jamais à connaître leur
+     surface : ils lisent ces jetons, et `.nuit` ou `.brasier` les réécrivent. */
+  --fond: var(--creme);
+  --fond-creuse: var(--creme-creuse);
+  --texte: var(--nuit);
+  --texte-faible: var(--plomb);
   --regle: var(--filet);
-  --accent-texte: var(--orange-texte);
+  --accent-texte: var(--orange-fonce);
+  --voile: 236, 233, 228;    /* crème, en composantes pour les voiles */
+  --plein-fond: var(--nuit);
+  --plein-texte: var(--creme);
+  --plein-revers: var(--brasier-panneau);
+  --plein-revers-texte: var(--creme);
 
   /* --- Grille --------------------------------------------------------- */
   --gap: max(1.25rem, 1.66vw);
@@ -61,6 +94,11 @@
   --section: clamp(4rem, 10vw, 10rem);
   --section-serre: clamp(2.5rem, 5vw, 5rem);
 
+  /* --- Arrondi ---------------------------------------------------------
+     La charte n'arrondit qu'une chose : les cartes d'épisode et les pochettes.
+     Le reste du système — boutons, filets, champs — reste à angle vif. */
+  --rayon-carte: 22px;
+
   /* --- Mouvement ------------------------------------------------------ */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -71,7 +109,7 @@
 
   --header: 4.5rem;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @media (min-width: 1024px) {
@@ -88,7 +126,7 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header) + 1.5rem);
-  background: var(--nuit);
+  background: var(--creme);
 }
 
 body {
@@ -132,45 +170,84 @@ h1, h2, h3, h4 {
   font-family: 'PP Neue Machina', var(--font-titre), system-ui, sans-serif;
 }
 
-::selection { background: var(--orange); color: var(--encre); }
+::selection { background: var(--orange); color: var(--creme); }
 
 :focus-visible {
-  outline: 2px solid var(--orange-clair);
+  outline: 2px solid var(--orange-fonce);
   outline-offset: 3px;
 }
 
 /* --------------------------------------------------------- surfaces ----- */
 
-/* Le bleu nuit est la valeur par défaut. `.surface` l'assombrit d'un cran pour
-   marquer une section sans introduire un second registre de couleur. */
+/* Trois registres, un seul mécanisme : chaque classe réécrit les jetons de
+   contexte, et tout ce qui vit à l'intérieur suit — filets, boutons, contour de
+   focus, voile des photographies. Aucun composant ne code sa propre couleur. */
+
+/* Creuse la surface d'un cran sans changer de registre. */
 .surface {
-  --fond: var(--nuit-profond);
+  --fond: var(--fond-creuse);
   background: var(--fond);
 }
 
-/* Champ orange plein — le second registre de la charte, en regard du noir,
-   repris de la couverture du deck.
+/* Registre bleu nuit — les bandes de respiration, le pied de page, la
+   planche typographique de la charte. */
+.nuit {
+  --fond: var(--nuit);
+  --fond-creuse: var(--nuit-profond);
+  --texte: var(--creme);
+  --texte-faible: var(--brume);
+  --regle: rgba(177, 191, 207, 0.18);
+  --filet-appuye: rgba(177, 191, 207, 0.34);
+  --accent-texte: var(--orange-texte);
+  --voile: 26, 36, 61;
+  /* L'aplat du bouton plein est l'orange **assombri**, pas l'orange de marque :
+     sur ce dernier, aucune couleur n'atteint AA — l'encre plafonne à 4,37:1 et le
+     blanc à 4,38:1, les deux meilleurs candidats. Sur #97461C le blanc monte à
+     6,5:1. C'est le même arbitrage que les panneaux des cartes. */
+  --plein-fond: var(--brasier-panneau);
+  --plein-texte: var(--blanc);
+  --plein-revers: var(--creme);
+  --plein-revers-texte: var(--nuit);
+  background-color: var(--fond);
+  color: var(--texte);
+}
 
-   DISPONIBLE MAIS NON APPLIQUÉ : le site est actuellement noir de bout en bout.
-   Pour colorer une section, il suffit de lui ajouter la classe `brasier` — tous
-   les jetons de contexte suivent, y compris les filets de formulaire et le
-   contour de focus. Le texte y passe en quasi noir : du blanc sur cet orange
-   plafonne à 2,7:1. */
+/* Champ orange plein — la ponctuation de la charte.
+
+   Le texte y passe en encre : du blanc sur cet aplat plafonne à 4,4:1. Là où la
+   charte pose un bloc de texte long, elle assombrit son propre orange
+   (`.panneau`) et repasse au blanc — c'est le geste des cartes d'épisode. */
 .brasier {
   --fond: var(--orange);
+  --fond-creuse: var(--brasier-panneau);
   --texte: var(--encre);
   --texte-faible: #3d2114;
-  --regle: rgba(18, 18, 18, 0.28);
-  --filet-appuye: rgba(18, 18, 18, 0.44);
+  --regle: rgba(14, 15, 19, 0.28);
+  --filet-appuye: rgba(14, 15, 19, 0.44);
   --accent-texte: var(--nuit);
+  --voile: 189, 94, 39;
+  --plein-fond: var(--nuit);
+  --plein-texte: var(--creme);
+  --plein-revers: var(--creme);
+  --plein-revers-texte: var(--nuit);
   background-color: var(--fond);
   /* Le champ du fichier de charte : terre cuite claire en haut-gauche,
-     soutenue en bas-droite. Les deux bornes portent du texte encre en AA
-     (4,7:1 et 5,8:1) — c'est ce qui fixe leur amplitude. */
+     soutenue en bas-droite. Les deux bornes portent du texte encre en AA. */
   background-image: radial-gradient(126% 116% at 18% 0%,
     var(--orange-clair) 0%,
-    #d17946 38%,
+    #cc6c33 38%,
     var(--orange) 100%);
+  color: var(--texte);
+}
+
+/* Panneau assombri du champ orange — 6,5:1 en blanc. */
+.panneau {
+  --fond: var(--brasier-panneau);
+  --texte: var(--blanc);
+  --texte-faible: rgba(255, 255, 255, 0.76);
+  --regle: rgba(255, 255, 255, 0.24);
+  --accent-texte: var(--blanc);
+  background-color: var(--fond);
   color: var(--texte);
 }
 
@@ -210,9 +287,20 @@ h1, h2, h3, h4 {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  /* Opacités volontairement basses : les teintes sont désormais les bonnes
-     (bien plus saturées que la première version), il faut donc doser plus
-     faiblement pour retrouver la même discrétion à l'écran. */
+  /* Opacités volontairement basses. Sur crème, un halo orange se voit dix fois
+     plus que sur bleu nuit : les valeurs du registre nuit y faisaient une tache.
+     Le halo est donc doublement dosé, et la variante nuit rétablit l'amplitude
+     d'origine juste en dessous. */
+  background:
+    radial-gradient(58% 74% at var(--lueur-x, 88%) var(--lueur-y, 34%),
+      color-mix(in srgb, var(--orange) 15%, transparent) 0%,
+      color-mix(in srgb, var(--orange) 9%, transparent) 34%,
+      transparent 82%);
+}
+
+/* Registre nuit : le halo retrouve l'amplitude des planches. */
+.nuit.braise::before,
+.nuit .braise::before {
   background:
     radial-gradient(58% 74% at var(--lueur-x, 88%) var(--lueur-y, 34%),
       color-mix(in srgb, var(--orange-clair) 34%, transparent) 0%,
@@ -273,8 +361,11 @@ h1, h2, h3, h4 {
   letter-spacing: -0.035em;
 }
 
-.h1 { font-size: var(--fs-h1); font-weight: 600; }
-.h2 { font-size: var(--fs-h2); font-weight: 600; }
+/* Les classes de titre portent leur interligne. Sans lui, un titre posé sur un
+   <p> héritait de l'interligne du texte courant (1,6) : invisible tant qu'il
+   tenait sur une ligne, béant dès qu'il se replie. */
+.h1 { font-size: var(--fs-h1); font-weight: 600; line-height: 1; }
+.h2 { font-size: var(--fs-h2); font-weight: 600; line-height: 1.06; }
 .h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.2; }
 
 .lede {
@@ -304,18 +395,18 @@ h1, h2, h3, h4 {
 
 /* --------------------------------------------------------- photographie - */
 
-/* Traitement éditorial unifié : la photographie est assombrie et réchauffée,
-   comme les portraits de la charte — sujet dans le noir, lumière orange
-   rasante — puis retrouve sa densité et sa couleur à l'interaction. C'est ce
-   qui fait tenir ensemble des images d'origines très différentes.
+/* La charte photographie en lumière du jour : mur clair, cuir fauve, aucun
+   assombrissement. On se limite donc à un appui de contraste — la densité
+   réduite de la version précédente appartenait au registre bleu nuit dominant,
+   et sur un fond crème elle salissait l'image.
 
-   Ordre des calques, qui compte : l'image, puis le voile noir qui garantit la
+   Ordre des calques, qui compte : l'image, puis le voile qui garantit la
    lisibilité du texte, puis la lumière de braise **par-dessus** le voile. Dans
    l'ordre inverse, le voile éteignait la couleur. */
 .photo {
   position: relative;
   overflow: hidden;
-  background: var(--nuit-haute);
+  background: color-mix(in srgb, var(--texte) 12%, var(--fond));
   isolation: isolate;
 }
 
@@ -323,49 +414,65 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* La charte présente ses photographies en couleur naturelle — cuir fauve,
-     jean, lumière du jour. On se limite donc à un léger appui de contraste et
-     une densité un peu réduite pour que la typographie tienne par-dessus. Plus
-     de désaturation ni de sépia : c'était le registre de l'ancienne charte. */
-  filter: brightness(0.88) contrast(1.08) saturate(1.02);
+  filter: contrast(1.05) saturate(1.04);
   transition: filter var(--t-long) var(--ease-out), transform 1.4s var(--ease-out);
 }
 
-/* Voile noir — calque 1.
+/* Voile de lisibilité — calque 1.
 
-   Deux dégradés, pas un : le vertical dégage l'en-tête et le pied de cadre, le
-   latéral garantit une colonne sombre à gauche, là où vit la typographie. C'est
-   le partage du deck — noir à gauche, lumière à droite — et c'est ce qui rend la
-   lisibilité indépendante de la photo fournie : un plan de travail en lumière du
-   jour passe aussi bien qu'un portrait dans le noir. */
+   Deux dégradés, pas un : le latéral garantit une colonne calme à gauche, là où
+   vit la typographie, le vertical dégage l'en-tête et le pied de cadre. C'est le
+   partage de la planche de mise en situation — typographie à gauche, sujet à
+   droite — et c'est ce qui rend la lisibilité indépendante de la photo fournie.
+
+   La teinte du voile vient du registre (`--voile`), pas du fichier : crème sur
+   fond clair, bleu nuit sur fond nuit. La photographie se fond ainsi toujours
+   dans sa page, et le même composant sert les deux registres. */
 .photo--voile::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  /* Voile en bleu nuit, pas en noir : la photographie doit se fondre dans le
-     fond du site, et un noir pur creusait un trou dans la page. */
   background:
     linear-gradient(100deg,
-      rgba(26, 36, 61, 0.96) 0%,
-      rgba(26, 36, 61, 0.84) 26%,
-      rgba(26, 36, 61, 0.42) 56%,
-      rgba(26, 36, 61, 0.1) 82%,
-      rgba(26, 36, 61, 0) 100%),
+      rgba(var(--voile), 0.95) 0%,
+      rgba(var(--voile), 0.82) 26%,
+      rgba(var(--voile), 0.4) 56%,
+      rgba(var(--voile), 0.1) 82%,
+      rgba(var(--voile), 0) 100%),
     linear-gradient(180deg,
-      rgba(26, 36, 61, 0.6) 0%,
-      rgba(26, 36, 61, 0.18) 36%,
-      rgba(26, 36, 61, 0.86) 100%);
+      rgba(var(--voile), 0.52) 0%,
+      rgba(var(--voile), 0.14) 36%,
+      rgba(var(--voile), 0.78) 100%);
 }
 
-/* Lumière rasante de braise — calque 2, au-dessus du voile */
+/* Lumière rasante de braise — calque 2, au-dessus du voile.
+
+   `screen` sur un fond clair blanchirait l'image : le mode de fusion suit le
+   registre, `multiply` en clair pour poser une ombre chaude, `screen` en nuit
+   pour poser une lumière.
+
+   Les opacités du registre clair sont deux fois plus basses. Un `multiply`
+   orange sur une photographie en lumière du jour teinte tout le cadre en pêche,
+   là où le même dosage en `screen` sur une image sombre ne fait qu'un reflet. */
 .photo--braise::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
+  background:
+    radial-gradient(74% 64% at 98% 10%,
+      color-mix(in srgb, var(--orange) 12%, transparent) 0%,
+      color-mix(in srgb, var(--orange) 7%, transparent) 34%,
+      transparent 76%);
+  mix-blend-mode: multiply;
+  transition: opacity var(--t-long) var(--ease-out);
+}
+
+.nuit .photo--braise::before,
+.brasier .photo--braise::before {
   background:
     radial-gradient(78% 68% at 96% 12%,
       color-mix(in srgb, var(--orange-clair) 16%, transparent) 0%,
@@ -375,14 +482,17 @@ h1, h2, h3, h4 {
       color-mix(in srgb, var(--nuit) 34%, transparent) 0%,
       transparent 74%);
   mix-blend-mode: screen;
-  transition: opacity var(--t-long) var(--ease-out);
 }
 
+/* Cadre arrondi — le seul arrondi de la charte, réservé aux cartes et aux
+   pochettes. */
+.photo--carte { border-radius: var(--rayon-carte); }
+
 /* Au survol, l'image reprend sa densité et la lumière recule d'un cran. */
-.photo:hover img { filter: brightness(1) contrast(1.02) saturate(1.06); }
+.photo:hover img { filter: contrast(1.02) saturate(1.08); }
 .photo:hover.photo--braise::before,
 a:hover .photo--braise::before,
-button:hover .photo--braise::before { opacity: 0.55; }
+button:hover .photo--braise::before { opacity: 0.5; }
 
 /* --------------------------------------------------------- liens ------- */
 
@@ -441,32 +551,30 @@ button:hover .photo--braise::before { opacity: 0.55; }
 .bouton:hover, .bouton:focus-visible { color: var(--fond); }
 .bouton:hover::before, .bouton:focus-visible::before { transform: translateY(0); }
 
-/* Bouton principal : plein rouge, la seule surface colorée de l'interface. */
-/* Le bouton plein porte l'orange de marque. Sur cet aplat, c'est l'encre qui
-   passe AA (4,7:1) — du blanc y plafonnerait à 3,97:1. */
+/* Bouton principal : un aplat plein, la seule surface colorée de l'interface.
+
+   Ses trois couleurs viennent du registre, pas d'une valeur fixe : bleu nuit sur
+   crème, terre cuite sur bleu nuit, bleu nuit sur le champ orange. À chaque fois
+   la paire passe AA, ce qu'un aplat orange unique ne permettait pas — l'orange de
+   marque ne se détache ni de son propre champ ni du crème. */
 .bouton--plein {
-  background: var(--orange);
-  color: var(--encre);
-  border-color: var(--orange);
+  background: var(--plein-fond);
+  color: var(--plein-texte);
+  border-color: var(--plein-fond);
 }
 
-.bouton--plein::before { background: var(--blanc); }
-.bouton--plein:hover, .bouton--plein:focus-visible { color: var(--nuit); border-color: var(--blanc); }
+.bouton--plein::before { background: var(--plein-revers); }
 
-/* Sur le champ orange, le rouge de marque ne se détacherait pas : le bouton
-   plein passe au quasi noir de la charte, et se creuse en orange au survol. */
-/* Sur le champ orange, le bouton plein passe au bleu nuit : l'orange de marque
-   ne se détacherait pas de son propre aplat. */
-.brasier .bouton--plein {
-  background: var(--nuit);
-  border-color: var(--nuit);
-  color: var(--blanc);
+/* Le survol inverse la paire, et la paire de survol est déclarée séparément :
+   dériver la couleur du texte du fond de repos (`--plein-fond`) donnait des
+   combinaisons sous le seuil AA dès que l'un des deux était orange. */
+.bouton--plein:hover,
+.bouton--plein:focus-visible {
+  color: var(--plein-revers-texte);
+  border-color: var(--plein-revers);
 }
 
-.brasier .bouton--plein::before { background: var(--blanc); }
-.brasier .bouton--plein:hover,
-.brasier .bouton--plein:focus-visible { color: var(--nuit); border-color: var(--nuit); }
-
+.nuit :focus-visible { outline-color: var(--orange-clair); }
 .brasier :focus-visible { outline-color: var(--nuit); }
 .brasier .champ__saisie:focus { border-bottom-color: var(--nuit); }
 

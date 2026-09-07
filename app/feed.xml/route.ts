@@ -1,6 +1,6 @@
 import { site } from '@/content/site';
 import type { Episode } from '@/content/types';
-import { canonicalUrl, getAllEpisodes } from '@/lib/episodes';
+import { canonicalUrl, episodeName, getAllEpisodes } from '@/lib/episodes';
 import { formatClock } from '@/lib/format';
 
 /**
@@ -58,13 +58,17 @@ function item(episode: Episode): string {
   ].join('\n');
 
   return `    <item>
-      <title>${esc(`Épisode ${episode.episodeNumber} — ${episode.guest.name}, ${episode.guest.company}`)}</title>
+      <!-- Le titre d'item porte la formule de la charte, telle qu'elle apparaît
+           sur la planche Apple Podcasts : « Derrière Café Reck, il y a Thomas
+           Riegert ». Le numéro d'épisode voyage dans <itunes:episode>, où les
+           lecteurs savent le lire, plutôt que dans le titre. -->
+      <title>${esc(episodeName(episode))}</title>
       <link>${esc(url)}</link>
       <guid isPermaLink="true">${esc(url)}</guid>
       <pubDate>${new Date(episode.publishedAt).toUTCString()}</pubDate>
       <description>${cdata(episode.excerpt)}</description>
       <content:encoded>${cdata(resume)}</content:encoded>
-      <itunes:title>${esc(episode.title)}</itunes:title>
+      <itunes:title>${esc(episodeName(episode))}</itunes:title>
       <itunes:episode>${episode.episodeNumber}</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:author>${esc(site.host.name)}</itunes:author>
@@ -97,7 +101,7 @@ export async function GET() {
     <itunes:type>episodic</itunes:type>
     <itunes:explicit>false</itunes:explicit>
     <itunes:image href="${esc(image)}" />
-    <itunes:category text="Business">
+    <itunes:category text="${esc(site.category)}">
       <itunes:category text="Entrepreneurship" />
     </itunes:category>
     <itunes:category text="Arts">

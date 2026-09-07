@@ -10,7 +10,7 @@ import { PlatformLinks } from '@/components/PlatformLinks';
 import { ResourceList } from '@/components/ResourceList';
 import { ShareBlock } from '@/components/ShareBlock';
 import { site } from '@/content/site';
-import { getAllEpisodes, getEpisode, getNeighbours, guestLine, vanityUrl } from '@/lib/episodes';
+import { episodeName, getAllEpisodes, getEpisode, getNeighbours, vanityUrl } from '@/lib/episodes';
 import { formatDate, formatDuration, formatEpisodeNumber } from '@/lib/format';
 import { breadcrumbSchema, episodeSchema, jsonLdGraph } from '@/lib/schema';
 import { episodeMetadata } from '@/lib/seo';
@@ -71,9 +71,9 @@ export default async function EpisodePage({ params }: Props) {
             <p className="label ephero__numero tabulaire">Épisode {numero}</p>
 
             <p className="ephero__invite h2" data-reveal-mask="pending">
-              <span>{episode.guest.company}</span>
+              <span>{episodeName(episode)}</span>
             </p>
-            <p className="ephero__fonction lede">{guestLine(episode)}</p>
+            <p className="ephero__fonction lede">{episode.guest.role}</p>
 
             <h1 className="display ephero__titre" data-reveal-mask="pending">
               <span>{episode.title}</span>
