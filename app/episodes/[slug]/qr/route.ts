@@ -6,7 +6,7 @@ import { getAllEpisodes, resolveEpisode, vanityUrl } from '@/lib/episodes';
  * La version imprimable est servie par `/episodes/[slug]/qr.png`.
  *
  * Règle absolue : le code encode **toujours** l'URL de la marque
- * (`derriere-la-marque.com/[slug]`), jamais une URL Spotify, YouTube ou Apple.
+ * (`derriere-la-marque.fr/[slug]`), jamais une URL Spotify, YouTube ou Apple.
  * Un flyer, un kakémono ou une plaque posée à l'accueil du client restent donc
  * valides même si toute la diffusion change de main.
  *

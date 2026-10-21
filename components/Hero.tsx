@@ -41,6 +41,7 @@ export function Hero({ episode }: { episode: Episode }) {
             sizes="100vw"
             priority
             quality={82}
+            style={{ objectPosition: visuel.objectPosition }}
           />
         )}
       </div>

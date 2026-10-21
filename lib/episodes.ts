@@ -154,7 +154,7 @@ export function episodeUrl(episode: Pick<Episode, 'slug'>): string {
   return `/episodes/${episode.slug}`;
 }
 
-/** URL courte de communication : `derriere-la-marque.com/[slug]`.
+/** URL courte de communication : `derriere-la-marque.fr/[slug]`.
  *  C'est celle qu'on imprime, qu'on partage et qu'on encode en QR code. */
 export function vanityUrl(episode: Pick<Episode, 'slug'>): string {
   return `${site.url}/${episode.slug}`;
@@ -164,7 +164,7 @@ export function canonicalUrl(episode: Pick<Episode, 'slug'>): string {
   return `${site.url}${episodeUrl(episode)}`;
 }
 
-/** URL courte vers une plateforme : `derriere-la-marque.com/[slug]/spotify`. */
+/** URL courte vers une plateforme : `derriere-la-marque.fr/[slug]/spotify`. */
 export function platformShortUrl(episode: Pick<Episode, 'slug'>, platform: string): string {
   return `${site.url}/${episode.slug}/${platform}`;
 }
@@ -185,7 +185,6 @@ const PLATFORM_ALIASES: Record<string, PlatformKey> = {
   deezer: 'deezer',
   amazon: 'amazon',
   'amazon-music': 'amazon',
-  castbox: 'castbox',
   rss: 'rss',
   feed: 'rss',
 };

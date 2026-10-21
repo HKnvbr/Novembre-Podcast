@@ -4,7 +4,7 @@ import { episodes } from '@/content/episodes';
 import { resolveEpisode } from '@/lib/episodes';
 
 /**
- * URL courte de communication — `derriere-la-marque.com/[slug]`.
+ * URL courte de communication — `derriere-la-marque.fr/[slug]`.
  *
  * C'est l'adresse qu'on imprime, qu'on encode en QR code et qu'on colle dans
  * une publication. Elle redirige en 308 vers la page canonique

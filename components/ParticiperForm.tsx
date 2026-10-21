@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { site } from '@/content/site';
+import { adresseCourriel, site } from '@/content/site';
 
 /**
  * Formulaire de proposition d'épisode.
@@ -46,7 +46,7 @@ export function ParticiperForm() {
     } catch {
       setEtat('erreur');
       setMessage(
-        `L’envoi a échoué. Écrivez-nous directement à ${site.email}, nous répondons sous 48 heures.`,
+        `L’envoi a échoué. Écrivez-nous directement à ${adresseCourriel()}, nous répondons sous 48 heures.`,
       );
     }
   }

@@ -2,7 +2,7 @@
   "name": "derriere-la-marque",
   "version": "0.1.0",
   "private": true,
-  "description": "derriere-la-marque.com — Derrière la marque, le podcast. Avec Frédéric Cronenberger.",
+  "description": "derriere-la-marque.fr — Derrière la marque, le podcast. Avec Frédéric Cronenberger.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

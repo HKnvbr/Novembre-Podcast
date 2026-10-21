@@ -17,14 +17,14 @@ export default async function EpisodesPage() {
     <div className="archive-page">
       <header className="archive__entete section shell">
         <p className="label archive__surtitre">
-          {String(episodes.length).padStart(2, '0')} épisodes
+          {String(episodes.length).padStart(2, '0')} épisode{episodes.length > 1 ? 's' : ''}
         </p>
         <h1 className="mega archive__titre" data-reveal-mask="pending">
           <span>Épisodes</span>
         </h1>
         <p className="lede archive__intro" data-reveal="pending">
           Une conversation par mois, enregistrée là où l’entreprise travaille. Chaque page réunit
-          l’écoute, la vidéo et l’intégralité des références citées.
+          l’écoute, la vidéo et l’invité.
         </p>
       </header>
 

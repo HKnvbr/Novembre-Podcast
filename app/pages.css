@@ -217,26 +217,27 @@
 
 .plateformes__note { padding-top: 1rem; max-width: 46ch; }
 
-/* ==================================================== média : bascule ==== */
+/* ================================================== disponible partout ==== */
 
-.media { padding-top: clamp(2rem, 4vw, 3rem); }
-
-.media__bascule {
-  display: inline-flex;
-  border: 1px solid var(--regle);
-  margin-bottom: 1.5rem;
+.presence__titre {
+  max-width: 22ch;
+  --espace-apres: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: var(--espace-apres);
 }
 
-.media__onglet {
-  padding: 0.8em 1.5em;
-  color: var(--texte-faible);
-  transition: color var(--t-court) var(--ease), background-color var(--t-court) var(--ease);
+/* Les lignes de « Écouter sur », sur toute la largeur. Huit adresses : quatre
+   par rang, puis deux, pour qu'aucun rang ne reste à moitié vide. */
+@media (min-width: 600px) {
+  .presence__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.media__onglet--actif { background: var(--texte); color: var(--fond); }
-.media__onglet:not(.media__onglet--actif):hover { color: var(--texte); }
+@media (min-width: 1000px) {
+  .presence__liste { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 
 /* ==================================================== média : lecteur ==== */
+
+.media { padding-top: clamp(2rem, 4vw, 3rem); }
 
 .lecteur {
   display: grid;
@@ -381,88 +382,6 @@
 }
 
 .video--facade:hover .video__glyphe { transform: scale(1.08); }
-
-/* ============================================================= ressources */
-
-.ressources__entete {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--gap);
-  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-.ressources__titre { max-width: 22ch; }
-.ressources__compte { color: var(--texte-faible); white-space: nowrap; }
-
-.ressource {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(1rem, 2.5vw, 2.5rem);
-  padding: clamp(1rem, 2vw, 1.5rem) 0;
-  border-bottom: 1px solid var(--regle);
-  position: relative;
-}
-
-.ressource[data-avec-image] { grid-template-columns: auto minmax(0, 1fr) auto auto; }
-
-/* Le fond se remplit par le bas au survol — même geste que les boutons. */
-.ressource::before {
-  content: '';
-  position: absolute;
-  inset: 0 calc(var(--outer) * -0.5);
-  background: var(--fond-creuse);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform var(--t-moyen) var(--ease-out);
-  z-index: -1;
-}
-
-.ressource:hover::before, .ressource:focus-visible::before { transform: scaleY(1); }
-
-.ressource__index { color: var(--texte-faible); align-self: start; padding-top: 0.35em; }
-
-.ressource__corps { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
-
-.ressource__titre {
-  transition: transform var(--t-moyen) var(--ease-out);
-  text-wrap: balance;
-}
-
-.ressource:hover .ressource__titre { transform: translateX(0.35em); }
-
-.ressource__description { max-width: 62ch; }
-
-.ressource__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.9em;
-  color: var(--texte-faible);
-  padding-top: 0.2rem;
-}
-
-.ressource__source { color: var(--texte); font-weight: 500; }
-
-.ressource__categorie {
-  border: 1px solid var(--regle);
-  padding: 0.32em 0.7em;
-  line-height: 1;
-}
-
-
-.ressource__vignette { width: clamp(4.5rem, 9vw, 8rem); aspect-ratio: 3 / 2; }
-.ressource:hover .ressource__vignette img { filter: none; }
-
-.ressource__fleche { color: var(--texte-faible); }
-
-@media (max-width: 767px) {
-  .ressource,
-  .ressource[data-avec-image] { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .ressource__vignette { display: none; }
-  .ressource__index { display: none; }
-}
 
 /* ========================================================= liste épisodes */
 
@@ -953,6 +872,170 @@ a:hover .fleche--gauche { transform: translateX(-0.35em); }
   .introuvable__lien { grid-template-columns: minmax(0, 1fr) auto; }
   .introuvable__lien .label { grid-column: 1 / -1; }
   .introuvable__lien .meta { grid-column: 1; }
+}
+
+/* ======================================================== page d'attente */
+
+/* Une seule hauteur d'écran, trois étages : le descripteur, le logotype et la
+   promesse, l'animateur. Le halo descend en bas à droite, là où la carte de
+   partage le pose. */
+.attente {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding-block: clamp(1.25rem, 3.5vh, 2.25rem) clamp(1rem, 2.5vh, 1.75rem);
+  --lueur-x: 82%;
+  --lueur-y: 86%;
+}
+
+.attente__separateur { padding-inline: 0.7em; opacity: 0.45; }
+
+.attente__corps {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2rem, 7vh, 5rem);
+  /* Une marge plancher : quand il reste de la place, le bloc est centré. À
+     8vh, le bouton du dernier épisode faisait déborder la page d'un écran de
+     1440 × 900, de 1920 × 1080 et de 1280 × 800. */
+  padding-block: clamp(2.5rem, 6vh, 6rem);
+}
+
+/* L'approche et l'interligne du logotype (`.logo__nom`), pas ceux de `.mega` :
+   serrée à -0,045em, la paire « LA » se chevauchait. Le plancher descend sous
+   celui de `.mega` : « LA MARQUE » mesure six corps, et à 3rem il débordait
+   d'un écran de 320 px. */
+.attente__signe {
+  color: var(--texte);
+  font-size: clamp(2.25rem, 13.5vw, 18rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+/* Le volet de la seconde ligne rognait la queue du Q, qui descend à 0,22em sous
+   la ligne de base quand le volet coupe à 0,11em : il gagne la place du jambage
+   par le bas, comme `.signe__ligne` gagne celle de l'accent par le haut.
+
+   Le volet agrandi laisserait dépasser le haut des lettres en attente : elles
+   partent donc de plus bas. La règle ne vise que l'état « pending », pour
+   laisser intacts l'apparition et le mode mouvement réduit. */
+.attente__signe .signe__ligne:last-child {
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.js .attente__signe [data-reveal-letters='pending'] .lettre { transform: translateY(135%); }
+.js .attente__signe [data-reveal-letters='pending'] .lettre.miroir { transform: translateY(135%) scaleX(-1); }
+
+.attente__texte {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.75rem clamp(2rem, 6vw, 6rem);
+}
+
+/* La promesse et les plateformes à gauche, l'appel à droite. L'appel court sur
+   les deux rangs, et les plateformes se calent en bas, sur la ligne de
+   l'adresse. */
+.attente__appel { grid-column: 2; grid-row: 1 / span 2; }
+.attente__plateformes { grid-column: 1; grid-row: 2; align-self: end; }
+
+.attente__promesse { max-width: 16ch; letter-spacing: -0.035em; }
+
+.attente__intro { max-width: 46ch; }
+
+.attente__plateformes-titre { color: var(--texte-faible); padding-bottom: 0.9rem; }
+
+.attente__plateformes-liste {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.25rem;
+  font-weight: 400;
+}
+
+/* Un nom ne se coupe pas, et son point le suit : au retour à la ligne, aucun
+   point ne se retrouve orphelin en tête. */
+.attente__plateformes-liste li { white-space: nowrap; }
+
+.attente__point { padding-inline: 0.6em; color: var(--texte-faible); }
+
+.attente__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding-top: clamp(1.5rem, 3.5vh, 2.5rem);
+}
+
+/* Le dernier épisode : le plus grand bouton, et la seule surface orange de la
+   page. L'aplat est l'orange assombri, comme le bouton plein du registre nuit :
+   le blanc y tient 6,5:1, quand l'orange de marque plafonne à 4,4:1. Au survol,
+   le bleu nuit monte par le bas. */
+.attente__episode {
+  --plein-fond: var(--brasier-panneau);
+  --plein-texte: var(--blanc);
+  --plein-revers: var(--nuit);
+  --plein-revers-texte: var(--creme);
+  font-size: clamp(0.78rem, 1vw, 1.05rem);
+  gap: 1em;
+  padding: 0.75em 1.8em 0.75em 0.75em;
+  max-width: 100%;
+}
+
+/* Le signe lecture des vidéos du site (`.video__glyphe`), dans son cercle. */
+.attente__lecture {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25em;
+  height: 2.25em;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: transform var(--t-moyen) var(--ease-out);
+}
+
+/* Le triangle, poussé d'un rien vers la droite : centré à l'œil, pas à la
+   boîte. */
+.attente__lecture svg {
+  width: 0.62em;
+  height: 0.75em;
+  margin-left: 0.12em;
+  fill: currentColor;
+}
+
+.attente__episode:hover .attente__lecture,
+.attente__episode:focus-visible .attente__lecture { transform: scale(1.08); }
+
+/* La flèche suit le libellé, et se cale à droite quand le bouton s'étire. */
+.attente__externe { margin-left: auto; }
+
+/* La proposition d'épisode passe au second rang : un cadre, et l'adresse sur
+   la même ligne. */
+.attente__proposer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.attente__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  color: var(--texte-faible);
+}
+
+@media (max-width: 799px) {
+  .attente__texte { grid-template-columns: 1fr; }
+  .attente__appel,
+  .attente__plateformes { grid-column: auto; grid-row: auto; }
+  .attente__plateformes { padding-top: 0.75rem; }
+  /* Sur une colonne, le bouton du dernier épisode prend toute la largeur. */
+  .attente__episode { align-self: stretch; }
 }
 
 /* ================================================ carte d'épisode ======== */

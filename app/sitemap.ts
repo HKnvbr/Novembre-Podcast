@@ -1,13 +1,18 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/content/site';
+import { enAttente } from '@/lib/coming-soon';
 import { getAllEpisodes } from '@/lib/episodes';
 
 /**
  * Les URLs courtes (`/[slug]`, `/[slug]/spotify`) sont volontairement absentes :
  * ce sont des redirections, pas des pages. Une seule adresse indexée par
  * épisode — la canonique.
+ *
+ * Pendant la page d'attente, la home est la seule adresse qui réponde.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (enAttente) return [{ url: site.url, changeFrequency: 'monthly', priority: 1 }];
+
   const episodes = await getAllEpisodes();
   const dernier = episodes[0]?.publishedAt;
 

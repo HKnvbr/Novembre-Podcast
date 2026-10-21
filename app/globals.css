@@ -540,15 +540,18 @@ button:hover .photo--braise::before { opacity: 0.5; }
   content: '';
   position: absolute;
   inset: 0;
-  background: currentColor;
+  background: var(--texte);
   transform: translateY(101%);
   transition: transform var(--t-moyen) var(--ease-out);
   z-index: -1;
 }
 
 /* Au survol le bouton se remplit de sa propre couleur : le texte prend celle
-   du fond de la section, pas un noir fixe — sinon il disparaîtrait sur orange. */
-.bouton:hover, .bouton:focus-visible { color: var(--fond); }
+   du fond de la section, pas un noir fixe — sinon il disparaîtrait sur orange.
+   Le remplissage et le cadre gardent la couleur de repos (`--texte`) : en
+   `currentColor`, ils suivaient le texte, et le bouton survolé n'était plus
+   qu'un pavé uni, sans libellé. */
+.bouton:hover, .bouton:focus-visible { color: var(--fond); border-color: var(--texte); }
 .bouton:hover::before, .bouton:focus-visible::before { transform: translateY(0); }
 
 /* Bouton principal : un aplat plein, la seule surface colorée de l'interface.
@@ -677,6 +680,10 @@ a:hover .fleche, button:hover .fleche { transform: translateX(0.35em); }
   white-space: nowrap;
   border: 0;
 }
+
+/* L'arobase d'une adresse masquée (`Courriel`), tant que le JavaScript ne l'a
+   pas assemblée : dessinée en CSS, elle ne figure pas dans le code de la page. */
+.arobase::before { content: '@'; }
 
 .evitement {
   position: fixed;

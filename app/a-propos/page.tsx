@@ -60,7 +60,7 @@ export default async function AProposPage() {
       </section>
 
       <div className="nuit surface">
-        <Ticker items={villes.length > 0 ? villes : site.ticker} duration={42} />
+        <Ticker items={villes.length > 1 ? villes : site.ticker} duration={42} />
       </div>
 
       {/* ---------------------------------------------------- animateur */}

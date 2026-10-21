@@ -1,4 +1,4 @@
-# derriere-la-marque.com
+# derriere-la-marque.fr
 
 **Derrière la marque — le podcast.** Avec Frédéric Cronenberger.
 Next.js 16 (App Router), TypeScript, React 19, CSS moderne.
@@ -11,12 +11,67 @@ npm run build && npm run start
 npm run typecheck
 ```
 
+> **En ligne pour l'instant : la page d'attente seule**, en HTML, CSS et JS,
+> sans build. On glisse le contenu du dossier [`page-attente/`](page-attente/)
+> dans `sites/derriere-la-marque.fr/`, sur l'hébergement Apache d'Infomaniak.
+> Le `.htaccess`, fichier caché (Cmd + Maj + point dans le Finder pour le
+> voir), est facultatif et n'est pas en ligne : il renverrait les adresses
+> inconnues vers l'accueil et ferait revalider la page à chaque visite. Pour
+> modifier la page, on remplace ses fichiers. Elle existe en second exemplaire,
+> à côté de [`components/ComingSoon.tsx`](components/ComingSoon.tsx) : toute
+> retouche se reporte dans les deux.
+>
+> Les fichiers de `page-attente/` sont volontairement **sans commentaires** :
+> tout visiteur les lit dans le code source de la page. Les explications vivent
+> dans les sources Next (`ComingSoon.tsx`, `app/globals.css`, `app/pages.css`)
+> et ici. Deux points d'entretien :
+>
+> - **À chaque nouvel épisode**, remplacer dans `index.html` l'adresse YouTube
+>   du bouton « Voir le dernier épisode » (classe `attente__episode`) : les URLs
+>   courtes du site ne sont pas en ligne.
+> - **L'adresse de la production** n'est écrite en clair nulle part, pour
+>   échapper aux robots qui collectent les adresses. Les liens portent le nom
+>   (`data-courriel`) et le domaine (`data-domaine`), que `script.js` assemble ;
+>   sans JavaScript, l'arobase est dessinée en CSS (`.arobase`).
+>
+> La page charge **Google Tag Manager** (conteneur `GTM-NH53WBZM`) : le script
+> en tête du `<head>`, juste après l'encodage, et son `<noscript>` juste après
+> `<body>`. Le site Next ne l'a pas encore. Toute balise qui dépose des cookies
+> (Google Analytics, pixels publicitaires) demandera un bandeau de
+> consentement : la page n'en a pas.
+>
+> Le site Next.js garde son propre mode attente. En production, la home affiche
+> la page d'attente et toute autre adresse y est redirigée — épisodes, URLs
+> courtes, flux RSS, formulaire. En développement, le site complet reste
+> visible. La variable `PAGE_ATTENTE`, gravée au build, tranche : `1` montre la
+> page d'attente partout (`PAGE_ATTENTE=1 npm run dev`), `0` ouvre le site.
+> Voir [`lib/coming-soon.ts`](lib/coming-soon.ts) et [`proxy.ts`](proxy.ts).
+
+### Le jour du lancement — Infomaniak, site Node.js
+
+Le site complet, lui, a besoin de Node.js : l'hébergement Apache de la page
+d'attente ne suffira pas. Il faudra un site Node.js chez Infomaniak (Node.js 24
+validé), réglé ainsi dans le Manager :
+
+| Champ                 | Valeur                                    |
+| --------------------- | ----------------------------------------- |
+| Version de Node.js    | 24                                        |
+| Dossier d'exécution   | `./` (là où se trouve `package.json`)     |
+| Commande de build     | `npm ci --include=dev && npm run build`   |
+| Commande de lancement | `npm start`                               |
+| Port d'écoute         | celui du Manager — `next start` lit `PORT` |
+
+`--include=dev` compte : le build a besoin de TypeScript, qu'un environnement en
+`NODE_ENV=production` n'installerait pas. Sans variable, le build produit la page
+d'attente ; pour ouvrir le site, la commande de build devient
+`npm ci --include=dev && PAGE_ATTENTE=0 npm run build`.
+
 ---
 
 ## 1. Le concept
 
 Le site n'est pas un catalogue d'écoute, c'est **le propriétaire des adresses du
-média**. Chaque épisode a une URL permanente sur `derriere-la-marque.com` : c'est
+média**. Chaque épisode a une URL permanente sur `derriere-la-marque.fr` : c'est
 elle qu'on imprime, qu'on encode en QR code, qu'on poste sur LinkedIn. Les
 plateformes de diffusion sont des destinations, pas des adresses.
 
@@ -161,7 +216,7 @@ un halo orange se voit dix fois plus que sur bleu nuit, et les valeurs du
 registre nuit y faisaient une tache.
 
 Le rythme de la home : hero clair → manifeste bleu nuit → bandeau défilant →
-dernier épisode sur crème → liens → archive en crème appuyé → pied bleu nuit.
+dernier épisode sur crème → archive en crème appuyé → pied bleu nuit.
 
 ### La carte d'épisode
 
@@ -267,12 +322,13 @@ flèches typographiques.
 /episodes/[slug]/opengraph-image   carte de partage 1200 × 630, générée
 /opengraph-image             carte de partage par défaut
 /feed.xml                    flux RSS podcast (RSS 2.0 + iTunes + podcast:)
-/sitemap.xml  /robots.txt  /icon.svg
+/sitemap.xml  /robots.txt  /icon.png
 /api/participer              réception du formulaire (POST)
 ```
 
-48 routes pré-rendues au build. Seules les redirections de plateforme et l'API
-sont dynamiques — parce qu'elles doivent l'être.
+15 routes pré-rendues au build avec un épisode ; chaque épisode en ajoute cinq,
+plus une par alias. Seules les redirections de plateforme et l'API sont
+dynamiques — parce qu'elles doivent l'être.
 
 ---
 
@@ -283,24 +339,24 @@ C'est le point structurant du projet.
 ### Adresse de communication
 
 ```
-derriere-la-marque.com/nord-cosmetics    → 308 → /episodes/nord-cosmetics
-derriere-la-marque.com/nord              → 308 → /episodes/nord-cosmetics
+derriere-la-marque.fr/reck    → 308 → /episodes/reck
 ```
 
-Un épisode déclare son `slug` **et** ses `aliases`. Un alias ne meurt jamais : un
-flyer imprimé avec `/nord` reste valide après un changement de slug canonique.
+Un épisode déclare son `slug` **et**, au besoin, des `aliases`. Un alias ne meurt
+jamais : un flyer imprimé avec un alias reste valide après un changement de slug
+canonique.
 Une seule page est indexée — la canonique — et le `<link rel="canonical">` le dit.
 
 ### Redirections courtes
 
 ```
-derriere-la-marque.com/nord-cosmetics/spotify   → l'URL Spotify du moment
-                                       /apple   → Apple Podcasts
-                                       /youtube → la vidéo   (alias : /yt, /video)
-                                       /deezer  /amazon  /castbox
-                                       /site    → le site du client
-                                       /linkedin→ le profil de l'invité
-                                       /rss     → le flux
+derriere-la-marque.fr/reck/spotify  → l'URL Spotify du moment
+                          /apple    → Apple Podcasts
+                          /youtube  → la vidéo   (alias : /yt, /video)
+                          /deezer  /amazon
+                          /site     → le site du client
+                          /linkedin → le profil de l'invité
+                          /rss      → le flux
 ```
 
 Deux décisions volontaires dans
@@ -333,7 +389,7 @@ bon compromis pour un support qui peut être plié ou sali.
 
 ```
 content/types.ts       le modèle, typé et commenté
-content/episodes.ts    les 6 épisodes de démonstration
+content/episodes.ts    les épisodes
 content/site.ts        wording de surface, animateur, navigation, plateformes
 lib/episodes.ts        ← la seule porte entre les pages et le contenu
 ```
@@ -475,11 +531,10 @@ Vérifié au navigateur sur 1440, 834 et 390 px :
   « Derrière la marque », pas les trois fragments de lettres ;
 - focus visible partout ; l'onde du lecteur est un vrai `<input type="range">`
   transparent, donc pilotable au clavier et annoncée avec `aria-valuetext` ;
-- la bascule audio/vidéo est un groupe de boutons `aria-pressed`, pas un faux
-  motif d'onglets ARIA sans panneaux ;
 - contrastes AA vérifiés par le calcul (voir la palette) ;
-- **aucun hôte tiers au chargement** : la vidéo YouTube est une façade cliquable
-  (`youtube-nocookie`, iframe créée au clic) ;
+- **aucun hôte tiers au chargement** : la vidéo de la page épisode est une
+  façade cliquable, avec la miniature copiée en local (`youtube-nocookie`, iframe
+  créée au clic). Un épisode sans vidéo affiche le lecteur audio ;
 - **CLS 0**, LCP local ~150–190 ms, 33 ko de CSS, 33 ko de police (fichier
   variable unique), images AVIF/WebP via `next/image`, `preload="metadata"` sur
   l'audio ;
@@ -487,26 +542,24 @@ Vérifié au navigateur sur 1440, 834 et 390 px :
 
 ---
 
-## 11. Contenu de démonstration
+## 11. Contenu
 
-Six épisodes, sujets cohérents avec le sujet du podcast : industrie et
-décarbonation, design et fabrication, retail, distribution B2B et digital,
-entrepreneuriat, marque et culture.
+Un seul épisode : le premier épisode réel, « Derrière Reck, il y a Thomas
+Riegert », dont les textes reprennent les descriptions publiées sur Ausha et
+YouTube. Ajouter le suivant ne coûte qu'une entrée dans
+[`content/episodes.ts`](content/episodes.ts). Tant qu'il n'y en a qu'un, la home
+masque « Tous les épisodes » et l'archive ses filtres ; faute de deux villes
+d'enregistrement, le bandeau de la page À propos reprend celui de la home.
 
-**Entreprises et invités sont fictifs.** Le fichier de charte cite un premier
-épisode réel — Café Reck, avec Thomas Riegert, artisan torréfacteur, 45 min. Il
-n'est **pas** dans les données de démonstration : la convention de nommage est en
-place, mais écrire une description, une biographie ou un extrait pour une
-personne et une entreprise réelles demande leur contenu, pas le mien. L'ajouter
-ne coûte qu'une entrée dans [`content/episodes.ts`](content/episodes.ts).
- Les ressources citées dans « Les liens de
-l'épisode » pointent en revanche vers des **sources réelles** (ADEME, Insee,
-Fevad, IFM, FEBEA, Bpifrance, Mobilier National, Cité du design, LSA, Stratégies,
-Dezeen, L'Usine Digitale, Cosmetic Valley…), pour que le bloc se comporte comme
-en production.
+Le site n'affiche pas les ressources citées (`resources`) : seul le flux RSS les
+reprend.
 
-Photographies : Unsplash, rapatriées en local dans `public/episodes` — le
-prototype n'appelle aucun CDN externe.
+Photographies : rapatriées en local dans `public/episodes` — le site n'appelle
+aucun CDN externe. Les photos du tournage arrivent en originaux d'appareil
+(7008 × 4672 px, 12 Mo) : on en publie une copie de 2400 px de large, sans
+métadonnées. Le hero de l'épisode #1 en est une ; son portrait reste provisoire
+(recadrage de la pochette), en attendant les autres photos. Quand une image est
+rognée, `objectPosition` choisit ce que l'écran étroit en garde.
 
 ### Trois réserves à lever avant production
 
@@ -516,9 +569,9 @@ prototype n'appelle aucun CDN externe.
    **étire** cette piste courte sur la durée annoncée (voir `echelle` dans
    [`components/EpisodeMedia.tsx`](components/EpisodeMedia.tsx)). Avec un vrai
    fichier, `echelle` vaut 1 et tout est exact — aucun code à retirer.
-2. **`youtubeId` est le même identifiant partout**, et les URLs de plateforme sont
-   des exemples. Ce sont exactement les six champs que l'on renseigne à la
-   publication.
+2. **Les liens d'écoute mènent à la page de l'émission**, pas à l'épisode — sauf
+   YouTube, qui pointe sur la vidéo de l'épisode #1. Il suffit de renseigner les
+   URLs de l'épisode dans `platforms` dès qu'elles existent.
 3. **Les deux polices de marque ne sont pas embarquées** — PP Neue Machina *et*
    PP Neue Montreal sont sous licence commerciale. Il faut leurs `.woff2`, plus
    des instances statiques de la Machina pour les cartes de partage. Voir §2 et

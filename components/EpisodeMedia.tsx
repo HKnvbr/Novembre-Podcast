@@ -7,19 +7,17 @@ import { formatTimecode } from '@/lib/format';
 import { waveform } from '@/lib/waveform';
 
 /**
- * Bloc média d'un épisode : bascule audio / vidéo et lecteur.
+ * Bloc média d'un épisode : la vidéo, quand l'épisode en a une — sinon le
+ * lecteur audio. Pas de bascule entre les deux : l'écoute reste à un clic, sur
+ * les plateformes listées à côté.
  *
  * Composant client parce que la position de lecture est un état partagé entre
  * le bouton, l'onde et le compteur. Le reste de la page est rendu côté serveur.
  */
-
-type Mode = 'audio' | 'video';
-
 export function EpisodeMedia({ episode }: { episode: Episode }) {
   const aVideo = Boolean(episode.youtubeId);
   const aAudio = Boolean(episode.audioUrl);
 
-  const [mode, setMode] = useState<Mode>(aAudio ? 'audio' : 'video');
   const [videoActive, setVideoActive] = useState(false);
 
   const audio = useRef<HTMLAudioElement>(null);
@@ -86,26 +84,7 @@ export function EpisodeMedia({ episode }: { episode: Episode }) {
 
   return (
     <div className="media">
-      {/* Groupe de boutons pressés, pas un motif ARIA « tablist » : sans
-          panneaux ni navigation aux flèches, des rôles d'onglets annonceraient
-          au lecteur d'écran un comportement que le composant n'a pas. */}
-      {aAudio && aVideo && (
-        <div className="media__bascule" role="group" aria-label="Format de lecture">
-          {(['audio', 'video'] as Mode[]).map((m) => (
-            <button
-              key={m}
-              type="button"
-              aria-pressed={mode === m}
-              className={`media__onglet label${mode === m ? ' media__onglet--actif' : ''}`}
-              onClick={() => setMode(m)}
-            >
-              {m === 'audio' ? 'Écouter' : 'Regarder'}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {mode === 'audio' && aAudio && (
+      {!aVideo && aAudio && (
         <div className="lecteur" data-lecture={enLecture || undefined}>
           {/* preload="metadata" : on veut la durée, pas le fichier. */}
           <audio ref={audio} src={episode.audioUrl} preload="metadata" />
@@ -166,11 +145,11 @@ export function EpisodeMedia({ episode }: { episode: Episode }) {
         </div>
       )}
 
-      {mode === 'video' && aVideo && (
+      {aVideo && (
         <VideoFacade
           youtubeId={episode.youtubeId as string}
-          poster={episode.coverImage.src}
-          alt={episode.coverImage.alt}
+          poster={(episode.videoPoster ?? episode.coverImage).src}
+          alt={(episode.videoPoster ?? episode.coverImage).alt}
           title={`${episode.guest.name} — ${episode.title}`}
           active={videoActive}
           onActivate={() => setVideoActive(true)}

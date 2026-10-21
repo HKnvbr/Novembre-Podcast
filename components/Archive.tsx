@@ -18,33 +18,36 @@ export function Archive({ episodes, topics }: { episodes: Episode[]; topics: str
 
   return (
     <>
-      <div className="filtres" role="group" aria-label="Filtrer par rubrique">
-        <button
-          type="button"
-          className={`filtre label${rubrique === null ? ' filtre--actif' : ''}`}
-          onClick={() => filtrer(null)}
-          aria-pressed={rubrique === null}
-        >
-          Toutes
-          <span className="filtre__compte tabulaire">{String(episodes.length).padStart(2, '0')}</span>
-        </button>
+      {/* Avec un seul épisode, chaque filtre le ramènerait lui seul. */}
+      {episodes.length > 1 && (
+        <div className="filtres" role="group" aria-label="Filtrer par rubrique">
+          <button
+            type="button"
+            className={`filtre label${rubrique === null ? ' filtre--actif' : ''}`}
+            onClick={() => filtrer(null)}
+            aria-pressed={rubrique === null}
+          >
+            Toutes
+            <span className="filtre__compte tabulaire">{String(episodes.length).padStart(2, '0')}</span>
+          </button>
 
-        {topics.map((topic) => {
-          const compte = episodes.filter((e) => e.topics.includes(topic)).length;
-          return (
-            <button
-              key={topic}
-              type="button"
-              className={`filtre label${rubrique === topic ? ' filtre--actif' : ''}`}
-              onClick={() => filtrer(rubrique === topic ? null : topic)}
-              aria-pressed={rubrique === topic}
-            >
-              {topic}
-              <span className="filtre__compte tabulaire">{String(compte).padStart(2, '0')}</span>
-            </button>
-          );
-        })}
-      </div>
+          {topics.map((topic) => {
+            const compte = episodes.filter((e) => e.topics.includes(topic)).length;
+            return (
+              <button
+                key={topic}
+                type="button"
+                className={`filtre label${rubrique === topic ? ' filtre--actif' : ''}`}
+                onClick={() => filtrer(rubrique === topic ? null : topic)}
+                aria-pressed={rubrique === topic}
+              >
+                {topic}
+                <span className="filtre__compte tabulaire">{String(compte).padStart(2, '0')}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <p className="sr" role="status">
         {visibles.length} épisode{visibles.length > 1 ? 's' : ''} affiché

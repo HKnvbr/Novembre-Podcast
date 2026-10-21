@@ -1,16 +1,23 @@
 import Link from 'next/link';
+import { AvailableOn } from '@/components/AvailableOn';
+import { ComingSoon } from '@/components/ComingSoon';
 import { EpisodeCard } from '@/components/EpisodeCard';
 import { EpisodeList } from '@/components/EpisodeList';
 import { EpisodeMedia } from '@/components/EpisodeMedia';
 import { Hero } from '@/components/Hero';
 import { PlatformLinks } from '@/components/PlatformLinks';
-import { ResourceList } from '@/components/ResourceList';
 import { Ticker } from '@/components/Ticker';
 import { site } from '@/content/site';
+import { enAttente } from '@/lib/coming-soon';
 import { getAllEpisodes, getLatestEpisode } from '@/lib/episodes';
 import { formatDate, formatDuration, formatEpisodeNumber } from '@/lib/format';
 
 export default async function HomePage() {
+  // Avant toute lecture des épisodes : rien du contenu ne doit partir dans la
+  // page, pas même dans la charge utile qui accompagne le HTML. La page
+  // d'attente n'en reprend que le lien vers la vidéo du dernier.
+  if (enAttente) return <ComingSoon />;
+
   const dernier = await getLatestEpisode();
   const tous = await getAllEpisodes();
 
@@ -117,35 +124,34 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* --------------------------------------- liens de l'épisode --- */}
-      <div className="section shell regle">
-        <ResourceList resources={dernier.resources} />
-      </div>
-
       {/* --------------------------------------------- tous les épisodes */}
-      <section className="tous section surface" aria-labelledby="titre-tous">
-        <div className="shell">
-          <header className="tous__entete">
-            <h2 id="titre-tous" className="display tous__titre" data-reveal-mask="pending">
-              <span>Tous les épisodes</span>
-            </h2>
-            <p className="label tous__compte tabulaire">
-              {String(tous.length).padStart(2, '0')} épisodes
+      {autres.length > 0 && (
+        <section className="tous section surface" aria-labelledby="titre-tous">
+          <div className="shell">
+            <header className="tous__entete">
+              <h2 id="titre-tous" className="display tous__titre" data-reveal-mask="pending">
+                <span>Tous les épisodes</span>
+              </h2>
+              <p className="label tous__compte tabulaire">
+                {String(tous.length).padStart(2, '0')} épisodes
+              </p>
+            </header>
+
+            <EpisodeList episodes={autres} />
+
+            <p className="tous__lien">
+              <Link href="/episodes" className="bouton">
+                Voir l’archive complète
+                <span className="fleche" aria-hidden="true">
+                  →
+                </span>
+              </Link>
             </p>
-          </header>
+          </div>
+        </section>
+      )}
 
-          <EpisodeList episodes={autres} />
-
-          <p className="tous__lien">
-            <Link href="/episodes" className="bouton">
-              Voir l’archive complète
-              <span className="fleche" aria-hidden="true">
-                →
-              </span>
-            </Link>
-          </p>
-        </div>
-      </section>
+      <AvailableOn />
     </>
   );
 }

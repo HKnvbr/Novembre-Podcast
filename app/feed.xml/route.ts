@@ -1,10 +1,10 @@
-import { site } from '@/content/site';
+import { adresseCourriel, site } from '@/content/site';
 import type { Episode } from '@/content/types';
 import { canonicalUrl, episodeName, getAllEpisodes } from '@/lib/episodes';
 import { formatClock } from '@/lib/format';
 
 /**
- * Flux RSS podcast — `derriere-la-marque.com/feed.xml`.
+ * Flux RSS podcast — `derriere-la-marque.fr/feed.xml`.
  *
  * Le site est la source éditoriale ; les plateformes consomment ce flux. On
  * s'arrête volontairement là : l'hébergement des fichiers audio, la mesure
@@ -94,7 +94,7 @@ export async function GET() {
     <copyright>© ${new Date().getFullYear()} ${site.name}</copyright>
     <description>${cdata(`${site.tagline} ${site.intro}`)}</description>
     <lastBuildDate>${new Date(episodes[0]?.publishedAt ?? Date.now()).toUTCString()}</lastBuildDate>
-    <generator>derriere-la-marque.com</generator>
+    <generator>derriere-la-marque.fr</generator>
     <itunes:author>${esc(site.host.name)}</itunes:author>
     <itunes:summary>${cdata(site.intro)}</itunes:summary>
     <itunes:subtitle>${esc(site.tagline)}</itunes:subtitle>
@@ -109,7 +109,7 @@ export async function GET() {
     </itunes:category>
     <itunes:owner>
       <itunes:name>${esc(site.name)}</itunes:name>
-      <itunes:email>${esc(site.email)}</itunes:email>
+      <itunes:email>${esc(adresseCourriel())}</itunes:email>
     </itunes:owner>
     <image>
       <url>${esc(image)}</url>

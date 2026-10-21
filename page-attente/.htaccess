@@ -1,0 +1,20 @@
+# Page d'attente — derriere-la-marque.fr (Apache, Infomaniak)
+
+# Une adresse inconnue renvoie vers l'accueil : un lien ou un QR code partagé
+# trop tôt mène quand même quelque part.
+ErrorDocument 404 https://derriere-la-marque.fr/
+
+# Pas de liste des fichiers d'un dossier : fonts/ renvoie vers l'accueil, lui aussi.
+Options -Indexes
+ErrorDocument 403 https://derriere-la-marque.fr/
+
+# Les fichiers système du Mac, s'ils partent avec le reste, restent illisibles.
+RedirectMatch 404 "/\.DS_Store$"
+
+# La page, sa feuille de style et son script se revalident à chaque visite :
+# une modification se voit tout de suite.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|txt|xml)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

@@ -9,14 +9,13 @@
  */
 
 /** Plateformes de diffusion. Sert aussi de clé pour les redirections courtes
- *  `derriere-la-marque.com/[slug]/[plateforme]`. */
+ *  `derriere-la-marque.fr/[slug]/[plateforme]`. */
 export type PlatformKey =
   | 'spotify'
   | 'apple'
   | 'youtube'
   | 'deezer'
   | 'amazon'
-  | 'castbox'
   | 'rss';
 
 export type ResourceCategory =
@@ -59,6 +58,10 @@ export interface Image {
   alt: string;
   width: number;
   height: number;
+  /** Cadrage quand l'image est rognée, en valeur CSS `object-position`
+   *  (« 80% 50% » garde la droite de la photo sur un écran étroit). Centré
+   *  par défaut. */
+  objectPosition?: string;
 }
 
 export interface Seo {
@@ -102,6 +105,9 @@ export interface Episode {
   audioBytes?: number;
   /** Identifiant YouTube (pas l'URL complète) : permet l'embed et la façade. */
   youtubeId?: string;
+  /** Image de la façade vidéo, en 16/9 : la miniature de la vidéo, copiée en
+   *  local. À défaut, la couverture, recadrée. */
+  videoPoster?: Image;
   /** Destinations des redirections courtes. Modifiables sans changer l'URL publique. */
   platforms: Partial<Record<PlatformKey, string>>;
   /** Site du client — exposé sur `/[slug]/site`. */

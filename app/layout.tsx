@@ -4,6 +4,7 @@ import { Header } from '@/components/Header';
 import { JsonLd } from '@/components/JsonLd';
 import { Reveal } from '@/components/Reveal';
 import { site } from '@/content/site';
+import { enAttente } from '@/lib/coming-soon';
 import { jsonLdGraph, organizationSchema, seriesSchema } from '@/lib/schema';
 import { texte, titre } from './fonts';
 import './globals.css';
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
   publisher: site.name,
   alternates: {
     canonical: '/',
-    types: { 'application/rss+xml': [{ url: '/feed.xml', title: site.name }] },
+    // Le flux est fermé pendant la page d'attente : ne pas l'annoncer.
+    types: enAttente ? undefined : { 'application/rss+xml': [{ url: '/feed.xml', title: site.name }] },
   },
   openGraph: {
     type: 'website',
@@ -58,18 +60,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: MARQUEUR_JS }} />
       </head>
       <body>
-        <div className="evitement">
-          <a href="#contenu">Aller au contenu</a>
-          <a href="#entete">Aller au menu</a>
-          <a href="#pied">Aller au pied de page</a>
-        </div>
+        {enAttente ? (
+          // Page d'attente : ni menu ni pied de page, qui mèneraient vers des
+          // pages fermées. La série, qui annonce son flux, attend l'ouverture.
+          <>
+            <main id="contenu">{children}</main>
+            <Reveal />
+            <JsonLd data={jsonLdGraph(organizationSchema({ courriel: false }))} />
+          </>
+        ) : (
+          <>
+            <div className="evitement">
+              <a href="#contenu">Aller au contenu</a>
+              <a href="#entete">Aller au menu</a>
+              <a href="#pied">Aller au pied de page</a>
+            </div>
 
-        <Header />
-        <main id="contenu">{children}</main>
-        <Footer />
+            <Header />
+            <main id="contenu">{children}</main>
+            <Footer />
 
-        <Reveal />
-        <JsonLd data={jsonLdGraph(organizationSchema(), seriesSchema())} />
+            <Reveal />
+            <JsonLd data={jsonLdGraph(organizationSchema(), seriesSchema())} />
+          </>
+        )}
       </body>
     </html>
   );

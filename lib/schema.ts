@@ -1,4 +1,4 @@
-import { site } from '@/content/site';
+import { adresseCourriel, showLinks, site, social } from '@/content/site';
 import type { Episode } from '@/content/types';
 import { canonicalUrl, episodeName } from './episodes';
 import { formatIsoDuration } from './format';
@@ -16,14 +16,20 @@ const SERIES_ID = `${site.url}/#podcast`;
 const EDITEUR_ID = `${site.url}/#editeur`;
 const HOTE_ID = `${site.url}/#animateur`;
 
-export function organizationSchema() {
+/** `courriel: false` retire l'adresse : la page d'attente la masque aux robots
+ *  (voir `components/Courriel.tsx`), les données structurées ne doivent pas la
+ *  livrer en clair. */
+export function organizationSchema({ courriel = true }: { courriel?: boolean } = {}) {
   return {
     '@type': 'Organization',
     '@id': EDITEUR_ID,
     name: site.name,
     url: site.url,
-    email: site.email,
+    ...(courriel ? { email: adresseCourriel() } : {}),
     description: site.intro,
+    // Les comptes officiels et les pages de l'émission : ils rattachent le média
+    // à ses profils, pour les moteurs de recherche.
+    sameAs: [...social.map((reseau) => reseau.url), ...Object.values(showLinks)].filter(Boolean),
   };
 }
 

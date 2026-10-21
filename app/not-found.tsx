@@ -1,10 +1,18 @@
 import Link from 'next/link';
+import { ComingSoon } from '@/components/ComingSoon';
+import { enAttente } from '@/lib/coming-soon';
 import { getAllEpisodes } from '@/lib/episodes';
 import { formatEpisodeNumber } from '@/lib/format';
 
 export const metadata = { title: 'Page introuvable' };
 
 export default async function NotFound() {
+  // Frontière 404 du layout racine : Next l'embarque dans la charge utile de
+  // chaque page. Pendant la page d'attente, elle ne doit donc rien dire des
+  // épisodes, hormis le lien vers la vidéo du dernier que porte la page
+  // d'attente — et toute adresse mène de toute façon à celle-ci.
+  if (enAttente) return <ComingSoon />;
+
   const episodes = (await getAllEpisodes()).slice(0, 3);
 
   return (
@@ -15,7 +23,7 @@ export default async function NotFound() {
       </h1>
       <p className="lede introuvable__texte">
         L’adresse demandée ne correspond à aucun épisode. Les adresses du podcast ont la forme{' '}
-        <span className="introuvable__exemple">derriere-la-marque.com/nom-du-client</span>.
+        <span className="introuvable__exemple">derriere-la-marque.fr/nom-du-client</span>.
       </p>
 
       <ul className="introuvable__liste regle">

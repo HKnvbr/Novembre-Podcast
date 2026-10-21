@@ -7,7 +7,6 @@ import { EpisodeNav } from '@/components/EpisodeNav';
 import { GuestCard } from '@/components/GuestCard';
 import { JsonLd } from '@/components/JsonLd';
 import { PlatformLinks } from '@/components/PlatformLinks';
-import { ResourceList } from '@/components/ResourceList';
 import { ShareBlock } from '@/components/ShareBlock';
 import { site } from '@/content/site';
 import { episodeName, getAllEpisodes, getEpisode, getNeighbours, vanityUrl } from '@/lib/episodes';
@@ -37,6 +36,7 @@ export default async function EpisodePage({ params }: Props) {
 
   const { previous, next } = await getNeighbours(slug);
   const numero = formatEpisodeNumber(episode.episodeNumber);
+  const visuel = episode.environmentImage ?? episode.coverImage;
 
   return (
     <article className="episode">
@@ -44,13 +44,14 @@ export default async function EpisodePage({ params }: Props) {
       <header className="ephero">
         <div className="photo photo--braise photo--voile ephero__fond">
           <Image
-            src={(episode.environmentImage ?? episode.coverImage).src}
-            alt={(episode.environmentImage ?? episode.coverImage).alt}
-            width={(episode.environmentImage ?? episode.coverImage).width}
-            height={(episode.environmentImage ?? episode.coverImage).height}
+            src={visuel.src}
+            alt={visuel.alt}
+            width={visuel.width}
+            height={visuel.height}
             sizes="100vw"
             priority
             quality={82}
+            style={{ objectPosition: visuel.objectPosition }}
           />
         </div>
 
@@ -128,11 +129,6 @@ export default async function EpisodePage({ params }: Props) {
             )}
           </aside>
         </div>
-      </div>
-
-      {/* --------------------------------------------- les liens ------- */}
-      <div className="section shell regle">
-        <ResourceList resources={episode.resources} />
       </div>
 
       {/* --------------------------------------------- l'invité -------- */}

@@ -6,7 +6,7 @@ import type { Episode } from '@/content/types';
 /**
  * Bloc de partage — le cœur de la stratégie d'URL.
  *
- * On expose une seule adresse : `derriere-la-marque.com/[slug]`. C'est elle qu'on
+ * On expose une seule adresse : `derriere-la-marque.fr/[slug]`. C'est elle qu'on
  * copie, qu'on imprime, qu'on encode en QR code. Le QR code est généré côté
  * serveur à partir de cette adresse et jamais à partir d'une URL Spotify ou
  * YouTube — si la diffusion change, le code imprimé reste valide.

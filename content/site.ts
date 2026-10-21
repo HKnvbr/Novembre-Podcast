@@ -17,10 +17,15 @@ export const site = {
   /** Sigle court, pour les contextes contraints. */
   initials: 'DLM',
 
-  url: 'https://derriere-la-marque.com',
+  url: 'https://derriere-la-marque.fr',
   locale: 'fr_FR',
   lang: 'fr',
-  email: 'contact@derriere-la-marque.com',
+  /** L'adresse de la production, en deux morceaux. Écrite d'un bloc, elle
+   *  partirait en clair dans le JavaScript envoyé au navigateur (l'en-tête,
+   *  composant client, embarque tout `site`), où les robots qui collectent les
+   *  adresses la trouvent. `adresseCourriel()` la reconstitue là où il la faut
+   *  en clair ; `Courriel` l'assemble dans le navigateur. */
+  courriel: { nom: 'production', domaine: 'derriere-la-marque.fr' },
 
   /** L'animateur du podcast — présent sur chaque épisode. */
   host: {
@@ -57,7 +62,7 @@ export const site = {
     body: [
       'Un dirigeant parle autrement quand il parle de chez lui. Devant l’atelier qu’il a monté, dans la boutique qu’il vient d’ouvrir, au milieu de la ligne de production qu’il a fallu convaincre de changer. Le décor n’est pas un décor : c’est le sujet.',
       'Alors nous déplaçons le matériel. Une demi-journée sur place, une conversation longue, sans script, et le contexte qui vient avec — les bruits, la lumière, les objets, les gens qui passent.',
-      'De cette rencontre nous tirons un épisode audio, une version vidéo, et une page. Cette page rassemble tout : l’écoute, l’invité, et l’intégralité des références citées pendant la discussion. C’est l’adresse de référence de l’épisode — celle qu’on imprime, qu’on partage, qu’on met en QR code.',
+      'De cette rencontre nous tirons un épisode audio, une version vidéo, et une page. Cette page rassemble tout : l’écoute, la vidéo et l’invité. C’est l’adresse de référence de l’épisode — celle qu’on imprime, qu’on partage, qu’on met en QR code.',
     ],
     hostBody: [
       'Frédéric Cronenberger mène les entretiens. Pas d’interview de complaisance, pas de questionnaire envoyé la veille : une conversation préparée, puis laissée libre.',
@@ -94,6 +99,11 @@ export const site = {
   ],
 } as const;
 
+/** L'adresse de la production, d'un bloc (voir `site.courriel`). */
+export function adresseCourriel(): string {
+  return `${site.courriel.nom}@${site.courriel.domaine}`;
+}
+
 /**
  * Libellés des plateformes. Volontairement typographiques : pas de logotypes
  * multicolores, le nom suffit et reste cohérent avec la direction artistique.
@@ -104,7 +114,6 @@ export const platforms: Record<PlatformKey, { label: string; short: string }> = 
   youtube: { label: 'YouTube', short: 'YT' },
   deezer: { label: 'Deezer', short: 'DZ' },
   amazon: { label: 'Amazon Music', short: 'AM' },
-  castbox: { label: 'Castbox', short: 'CB' },
   rss: { label: 'Flux RSS', short: 'RSS' },
 };
 
@@ -115,5 +124,48 @@ export const platformOrder: PlatformKey[] = [
   'youtube',
   'deezer',
   'amazon',
-  'castbox',
+];
+
+/**
+ * Page de l'émission sur chaque plateforme. Toutes les adresses sont
+ * définitives ; les épisodes (episodes.ts) reprennent celles des plateformes
+ * audio, faute de pages d'épisode.
+ */
+export const showLinks: Partial<Record<PlatformKey, string>> = {
+  apple: 'https://podcasts.apple.com/fr/podcast/derriere-la-marque-le-podcast/id6823126719',
+  spotify: 'https://open.spotify.com/show/5JNHYFyVvkOE84g0yvbePK',
+  // La chaîne, pas une vidéo. Son nom s'écrit bien « marquavec », sans le e.
+  youtube: 'https://www.youtube.com/@Derri%C3%A8relamarquavecFred',
+  amazon: 'https://music.amazon.com/podcasts/81d78f2e-3439-48fd-93c8-57eb7c4aa3c8',
+  deezer: 'https://www.deezer.com/show/1003670492',
+};
+
+export type SocialKey = 'instagram' | 'facebook' | 'x';
+
+/** Réseaux sociaux du podcast — les comptes officiels. */
+export const social: { key: SocialKey; label: string; url: string }[] = [
+  { key: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/dlmlepodcast/' },
+  { key: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61594244070740' },
+  { key: 'x', label: 'X', url: 'https://x.com/DLMLEPODCAST' },
+];
+
+const compte = (key: SocialKey) => social.find((reseau) => reseau.key === key)?.url;
+
+/**
+ * « Disponible sur toutes les plateformes » : la page de l'émission sur chaque
+ * plateforme et les comptes officiels, dans l'ordre où la home (`AvailableOn`)
+ * et la page d'attente les citent. En texte, sans logo. Chaque nom s'écrit
+ * comme la marque l'écrit : pas de capitales forcées, et « Apple Podcasts »
+ * avec un s. La copie en ligne de la page d'attente (`page-attente/index.html`)
+ * est écrite à la main : toute retouche s'y reporte.
+ */
+export const presence: { label: string; url?: string }[] = [
+  { label: 'YouTube', url: showLinks.youtube },
+  { label: 'X', url: compte('x') },
+  { label: 'Spotify', url: showLinks.spotify },
+  { label: 'Apple Podcasts', url: showLinks.apple },
+  { label: 'Instagram', url: compte('instagram') },
+  { label: 'Facebook', url: compte('facebook') },
+  { label: 'Deezer', url: showLinks.deezer },
+  { label: 'Amazon Music', url: showLinks.amazon },
 ];

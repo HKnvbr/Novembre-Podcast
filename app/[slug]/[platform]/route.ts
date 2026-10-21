@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 import { normalizePlatform, resolveEpisode, resolveTarget } from '@/lib/episodes';
 
 /**
- * Redirections courtes — `derriere-la-marque.com/[slug]/[plateforme]`.
+ * Redirections courtes — `derriere-la-marque.fr/[slug]/[plateforme]`.
  *
- *   /nord-cosmetics/spotify  → l'URL Spotify du moment
- *   /nord-cosmetics/youtube  → la vidéo
- *   /nord-cosmetics/apple    → Apple Podcasts
- *   /nord-cosmetics/site     → le site du client
- *   /nord-cosmetics/linkedin → le profil de l'invité
+ *   /reck/spotify  → l'URL Spotify du moment
+ *   /reck/youtube  → la vidéo
+ *   /reck/apple    → Apple Podcasts
+ *   /reck/site     → le site du client
+ *   /reck/linkedin → le profil de l'invité
  *
  * Deux décisions importantes :
  *

@@ -6,7 +6,7 @@ import { formatEpisodeNumber } from './format';
 
 /**
  * Construction des métadonnées. Un seul principe : l'URL canonique d'un
- * épisode est toujours `derriere-la-marque.com/episodes/[slug]`, quelle que soit
+ * épisode est toujours `derriere-la-marque.fr/episodes/[slug]`, quelle que soit
  * l'adresse par laquelle le visiteur est arrivé.
  */
 
