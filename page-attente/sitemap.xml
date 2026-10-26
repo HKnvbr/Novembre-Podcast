@@ -5,4 +5,9 @@
     <changefreq>monthly</changefreq>
     <priority>1</priority>
   </url>
+  <url>
+    <loc>https://derriere-la-marque.fr/episodes/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
