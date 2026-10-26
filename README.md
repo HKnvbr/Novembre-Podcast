@@ -36,9 +36,12 @@ npm run typecheck
 >
 > La page charge **Google Tag Manager** (conteneur `GTM-NH53WBZM`) : le script
 > en tête du `<head>`, juste après l'encodage, et son `<noscript>` juste après
-> `<body>`. Le site Next ne l'a pas encore. Toute balise qui dépose des cookies
-> (Google Analytics, pixels publicitaires) demandera un bandeau de
-> consentement : la page n'en a pas.
+> `<body>`. Le conteneur porte Google Analytics (`G-V66RH80E0B`) et le
+> bandeau de consentement **Axeptio**, en mode consentement « refusé » par
+> défaut. Le bouton « Gestion des cookies » du pied de page rouvre ce bandeau
+> (`openAxeptioCookies()`, dans `script.js`) ; sans JavaScript, il est masqué.
+> Le site Next n'a encore ni Tag Manager ni ce bouton : à reporter au
+> lancement.
 >
 > Le site Next.js garde son propre mode attente. En production, la home affiche
 > la page d'attente et toute autre adresse y est redirigée — épisodes, URLs

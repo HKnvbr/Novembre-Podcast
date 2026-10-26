@@ -49,3 +49,7 @@ document.querySelectorAll('[data-courriel]').forEach((lien) => {
   lien.href = `mailto:${adresse}${sujet ? `?subject=${encodeURIComponent(sujet)}` : ''}`;
   if (lien.hasAttribute('data-afficher')) lien.textContent = adresse;
 });
+
+document.querySelector('[data-cookies]')?.addEventListener('click', () => {
+  if (typeof window.openAxeptioCookies === 'function') window.openAxeptioCookies();
+});

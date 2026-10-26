@@ -451,10 +451,27 @@ a:hover .fleche { transform: translateX(0.35em); }
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem 1rem;
   padding-top: 1.25rem;
   color: var(--texte-faible);
 }
+
+.attente__mentions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+
+.attente__cookies {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+html:not(.js) .attente__cookies { display: none; }
 
 @media (max-width: 799px) {
   .attente__texte { grid-template-columns: 1fr; }
